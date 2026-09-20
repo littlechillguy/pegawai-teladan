@@ -1,0 +1,28 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Position;
+use Illuminate\Database\Seeder;
+
+class PositionSeeder extends Seeder
+{
+    public function run(): void
+    {
+        Position::create([
+            'name' => 'Staff',
+        ]);
+
+        Position::create([
+            'name' => 'Supervisor',
+        ]);
+
+        Position::create([
+            'name' => 'Manager',
+        ]);
+
+        Position::create([
+            'name' => 'Kepala Bagian',
+        ]);
+    }
+}
