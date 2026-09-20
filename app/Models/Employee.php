@@ -2,43 +2,46 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Employee extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'nip',
         'name',
-        'department_id',
-        'position_id',
-        'golongan',
+        'department',
+        'position',
+        'photo',
+        'phone',
         'status',
     ];
 
-    public function department(): BelongsTo
+    /**
+     * Akun login milik pegawai
+     */
+    public function user(): HasOne
     {
-        return $this->belongsTo(Department::class);
+        return $this->hasOne(User::class);
     }
 
-    public function position(): BelongsTo
-    {
-        return $this->belongsTo(Position::class);
-    }
-
+    /**
+     * Kandidat yang pernah diikuti pegawai
+     */
     public function candidates(): HasMany
     {
         return $this->hasMany(Candidate::class);
     }
 
-    public function assessmentsAsEvaluator(): HasMany
+    /**
+     * Penilaian yang diberikan pegawai kepada kandidat
+     */
+    public function assessments(): HasMany
     {
         return $this->hasMany(Assessment::class, 'evaluator_id');
-    }
-
-    public function user()
-    {
-        return $this->hasOne(User::class);
     }
 }

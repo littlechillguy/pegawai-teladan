@@ -11,24 +11,23 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        $adminEmployee = Employee::where('nip', 'EMP001')->first();
+        $admin = Employee::where('nip', 'EMP001')->first();
 
         User::create([
-            'name' => 'Admin',
-            'email' => 'admin@pegawai.test',
-            'password' => Hash::make('password'),
-            'employee_id' => $adminEmployee->id,
+            'employee_id' => $admin->id,
+            'password' => Hash::make('password123'),
             'role' => 'admin',
         ]);
 
-        $evaluatorEmployee = Employee::where('nip', 'EMP002')->first();
+        $employees = Employee::where('nip', '!=', 'EMP001')
+            ->get();
 
-        User::create([
-            'name' => 'Budi Santoso',
-            'email' => 'budi@pegawai.test',
-            'password' => Hash::make('password'),
-            'employee_id' => $evaluatorEmployee->id,
-            'role' => 'evaluator',
-        ]);
+        foreach ($employees as $employee) {
+            User::create([
+                'employee_id' => $employee->id,
+                'password' => Hash::make('password123'),
+                'role' => 'employee',
+            ]);
+        }
     }
 }

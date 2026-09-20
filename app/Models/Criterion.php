@@ -2,19 +2,31 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Criterion extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'name',
         'weight',
-        'description',
     ];
 
-    public function assessmentDetails(): HasMany
+    protected function casts(): array
     {
-        return $this->hasMany(AssessmentDetail::class);
+        return [
+            'weight' => 'decimal:2',
+        ];
+    }
+
+    /**
+     * Pertanyaan yang termasuk dalam kriteria ini
+     */
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class);
     }
 }

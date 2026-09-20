@@ -11,46 +11,61 @@ class EmployeeSeeder extends Seeder
     {
         Employee::create([
             'nip' => 'EMP001',
-            'name' => 'Andi Saputra',
-            'department_id' => 1,
-            'position_id' => 1,
-            'golongan' => 'III/a',
+            'name' => 'Admin Perusahaan',
+            'department' => 'IT',
+            'position' => 'Administrator',
+            'photo' => null,
+            'phone' => '081234567890',
             'status' => 'active',
         ]);
 
         Employee::create([
             'nip' => 'EMP002',
-            'name' => 'Budi Santoso',
-            'department_id' => 1,
-            'position_id' => 2,
-            'golongan' => 'III/b',
+            'name' => 'Andi Pratama',
+            'department' => 'IT',
+            'position' => 'Staff IT',
+            'photo' => null,
+            'phone' => '081234567891',
             'status' => 'active',
         ]);
 
         Employee::create([
             'nip' => 'EMP003',
-            'name' => 'Citra Lestari',
-            'department_id' => 2,
-            'position_id' => 1,
-            'golongan' => 'III/a',
+            'name' => 'Budi Santoso',
+            'department' => 'Finance',
+            'position' => 'Staff Finance',
+            'photo' => null,
+            'phone' => '081234567892',
             'status' => 'active',
         ]);
 
         Employee::create([
             'nip' => 'EMP004',
-            'name' => 'Dedi Kurniawan',
-            'department_id' => 3,
-            'position_id' => 1,
-            'golongan' => 'III/a',
+            'name' => 'Citra Lestari',
+            'department' => 'HRD',
+            'position' => 'Staff HRD',
+            'photo' => null,
+            'phone' => '081234567893',
             'status' => 'active',
         ]);
 
         Employee::create([
             'nip' => 'EMP005',
-            'name' => 'Eka Pratama',
-            'department_id' => 4,
-            'position_id' => 3,
-            'golongan' => 'III/c',
+            'name' => 'Dimas Saputra',
+            'department' => 'Marketing',
+            'position' => 'Staff Marketing',
+            'photo' => null,
+            'phone' => '081234567894',
+            'status' => 'active',
+        ]);
+
+        Employee::create([
+            'nip' => 'EMP006',
+            'name' => 'Eka Putri',
+            'department' => 'Operations',
+            'position' => 'Staff Operations',
+            'photo' => null,
+            'phone' => '081234567895',
             'status' => 'active',
         ]);
     }
