@@ -159,16 +159,56 @@
                                     </td>
 
                                     {{-- Action --}}
-                                    <td class="px-6 py-4 text-right">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+    <div class="flex items-center justify-end gap-2">
 
-                                        <a
-    href="{{ route('admin.employees.edit', $employee) }}"
-    class="text-sm font-medium text-gray-700 hover:text-gray-900"
->
-    Edit
-</a>
+    <a
+        href="{{ route('admin.employees.edit', $employee) }}"
+        class="px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700"
+    >
+        Edit
+    </a>
 
-                                    </td>
+    @if (in_array($employee->id, $candidateEmployeeIds))
+
+        {{-- Sudah menjadi kandidat --}}
+        <form
+            action="{{ route('admin.employees.cancel-candidate', $employee) }}"
+            method="POST"
+            onsubmit="return confirm('Batalkan {{ $employee->name }} sebagai kandidat periode ini?')"
+        >
+            @csrf
+
+            <button
+                type="submit"
+                class="px-3 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700"
+            >
+                Batalkan Kandidat
+            </button>
+        </form>
+
+    @else
+
+        {{-- Belum menjadi kandidat --}}
+        <form
+            action="{{ route('admin.employees.select-candidate', $employee) }}"
+            method="POST"
+            onsubmit="return confirm('Pilih {{ $employee->name }} sebagai kandidat periode ini?')"
+        >
+            @csrf
+
+            <button
+                type="submit"
+                class="px-3 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700"
+            >
+                Pilih Kandidat
+            </button>
+        </form>
+
+    @endif
+
+</div>
+</td>
 
                                 </tr>
 

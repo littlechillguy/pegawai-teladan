@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     public function up(): void
     {
         Schema::create('candidates', function (Blueprint $table) {
@@ -19,8 +18,7 @@ return new class extends Migration
                 ->constrained('employees')
                 ->cascadeOnDelete();
 
-            $table->decimal('attendance_percentage', 5, 2)
-                ->default(0);
+            $table->decimal('attendance_percentage', 5, 2)->nullable();
 
             $table->decimal('final_score', 5, 2)
                 ->nullable();

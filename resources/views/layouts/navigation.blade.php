@@ -32,36 +32,39 @@
 
                         <div class="flex items-center gap-1">
 
-                            {{-- Dashboard --}}
                             <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                                Dashboard
+                                {{ __('Dashboard') }}
                             </x-nav-link>
 
-                            {{-- Data Pegawai --}}
                             <x-nav-link :href="route('admin.employees.index')"
                                 :active="request()->routeIs('admin.employees.*')">
-                                Pegawai
+                                {{ __('Pegawai') }}
                             </x-nav-link>
 
-                            {{-- Placeholder --}}
                             <x-nav-link :href="route('admin.periods.index')"
                                 :active="request()->routeIs('admin.periods.*')">
-                                Periode
+                                {{ __('Periode') }}
                             </x-nav-link>
 
                             <x-nav-link :href="route('admin.candidates.index')"
                                 :active="request()->routeIs('admin.candidates.*')">
-                                Kandidat
+                                {{ __('Kandidat') }}
+                            </x-nav-link>
+
+                            <x-nav-link :href="route('admin.assessment-results.index')"
+                                :active="request()->routeIs('admin.assessment-results.*')">
+                                {{ __('Hasil Penilaian') }}
                             </x-nav-link>
 
                             <x-nav-link :href="route('admin.criteria.index')"
                                 :active="request()->routeIs('admin.criteria.*')">
-                                Kriteria
+                                {{ __('Kriteria') }}
                             </x-nav-link>
 
-                            <span class="px-3 py-2 text-sm text-gray-400">
-                                Hall of Fame
-                            </span>
+                            <x-nav-link :href="route('admin.hall-of-fame.index')"
+                                :active="request()->routeIs('admin.hall-of-fame.*')">
+                                {{ __('Hall of Fame') }}
+                            </x-nav-link>
 
                         </div>
 
