@@ -51,7 +51,7 @@ class EmployeeController extends Controller
                 'string',
                 'max:255',
             ],
-            'department' => [
+            'pokja' => [
                 'required',
                 'string',
                 'max:255',
@@ -96,7 +96,7 @@ class EmployeeController extends Controller
             $employee = Employee::create([
                 'nip' => $validated['nip'],
                 'name' => $validated['name'],
-                'department' => $validated['department'],
+                'pokja' => $validated['pokja'],
                 'position' => $validated['position'],
                 'photo' => $photoPath,
                 'phone' => $validated['phone'] ?? null,
@@ -134,7 +134,7 @@ class EmployeeController extends Controller
                 'string',
                 'max:255',
             ],
-            'department' => [
+            'pokja' => [
                 'required',
                 'string',
                 'max:255',
@@ -184,7 +184,7 @@ class EmployeeController extends Controller
             $employee->update([
                 'nip' => $validated['nip'],
                 'name' => $validated['name'],
-                'department' => $validated['department'],
+                'pokja' => $validated['pokja'],
                 'position' => $validated['position'],
                 'photo' => $photoPath,
                 'phone' => $validated['phone'] ?? null,
@@ -208,6 +208,25 @@ class EmployeeController extends Controller
             ->route('admin.employees.index')
             ->with('success', 'Data pegawai berhasil diperbarui.');
     }
+
+    public function destroy(Employee $employee)
+{
+    // Hapus file foto dari storage kalau ada
+    if ($employee->photo) {
+        Storage::disk('public')->delete($employee->photo);
+    }
+
+    $name = $employee->name;
+
+    // Hapus data pegawai. Berkat cascadeOnDelete di migration,
+    // akun login, riwayat kandidat, dan riwayat penilaian
+    // miliknya akan ikut terhapus otomatis.
+    $employee->delete();
+
+    return redirect()
+        ->route('admin.employees.index')
+        ->with('success', $name . ' berhasil dihapus secara permanen.');
+}
 
     public function selectCandidate(Employee $employee)
     {

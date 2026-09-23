@@ -61,7 +61,7 @@
                                 </th>
 
                                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">
-                                    Departemen
+                                    Pokja
                                 </th>
 
                                 <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">
@@ -129,9 +129,9 @@
                                         {{ $employee->nip }}
                                     </td>
 
-                                    {{-- Department --}}
+                                    {{-- Pokja --}}
                                     <td class="px-6 py-4 text-sm text-gray-700">
-                                        {{ $employee->department }}
+                                        {{ $employee->pokja }}
                                     </td>
 
                                     {{-- Position --}}
@@ -168,6 +168,23 @@
     >
         Edit
     </a>
+
+    {{-- TAMBAHAN BARU: Tombol Hapus --}}
+<form
+    action="{{ route('admin.employees.destroy', $employee) }}"
+    method="POST"
+    onsubmit="return confirm('Yakin ingin menghapus {{ $employee->name }} secara PERMANEN? Seluruh riwayat kandidat dan penilaian miliknya akan ikut terhapus dan tidak bisa dikembalikan.')"
+>
+    @csrf
+    @method('DELETE')
+
+    <button
+        type="submit"
+        class="px-3 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700"
+    >
+        Hapus
+    </button>
+</form>
 
     @if (in_array($employee->id, $candidateEmployeeIds))
 

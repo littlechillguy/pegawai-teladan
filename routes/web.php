@@ -61,6 +61,7 @@ Route::middleware(['auth', 'admin'])
 
         Route::put('/employees/{employee}', [EmployeeController::class, 'update'])
             ->name('employees.update');
+            
 
         // Pilih pegawai sebagai kandidat periode aktif
         Route::post(
@@ -74,13 +75,16 @@ Route::middleware(['auth', 'admin'])
             [EmployeeController::class, 'cancelCandidate']
         )->name('employees.cancel-candidate');
 
+        Route::delete('/employees/{employee}', [EmployeeController::class, 'destroy'])
+    ->name('employees.destroy');
+
 
         // =========================
         // PERIODE
         // =========================
     
         Route::resource('periods', PeriodController::class)
-            ->except(['show', 'destroy'])
+            ->except(['show'])
             ->names('periods');
 
 
@@ -129,6 +133,9 @@ Route::middleware(['auth', 'admin'])
             '/questions/{question}',
             [QuestionController::class, 'update']
         )->name('questions.update');
+
+        Route::put('/criteria', [CriterionController::class, 'update'])
+    ->name('criteria.update');
 
 
         // =========================

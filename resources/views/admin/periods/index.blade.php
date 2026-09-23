@@ -28,6 +28,13 @@
                 </div>
             @endif
 
+            {{-- TAMBAHAN BARU: Notifikasi Error dari session --}}
+@if (session('error'))
+    <div class="mb-6 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+        {{ session('error') }}
+    </div>
+@endif
+
             {{-- Error --}}
             @if ($errors->any())
                 <div class="mb-6 rounded-lg bg-red-50 border border-red-200 px-4 py-3">
@@ -119,14 +126,31 @@
 
                                         </td>
 
-                                        <td class="px-6 py-4 text-right">
+                                       <td class="px-6 py-4 text-right">
+    <div class="flex items-center justify-end gap-2">
 
-                                            <a href="{{ route('admin.periods.edit', $period) }}"
-                                               class="inline-flex items-center px-3 py-2 rounded-lg bg-gray-100 text-gray-700 text-xs font-semibold hover:bg-gray-200">
-                                                Edit
-                                            </a>
+        <a href="{{ route('admin.periods.edit', $period) }}"
+           class="inline-flex items-center px-3 py-2 rounded-lg bg-gray-100 text-gray-700 text-xs font-semibold hover:bg-gray-200">
+            Edit
+        </a>
 
-                                        </td>
+        <form
+            action="{{ route('admin.periods.destroy', $period) }}"
+            method="POST"
+            onsubmit="return confirm('Yakin ingin menghapus periode &quot;{{ $period->name }}&quot;? Tindakan ini tidak dapat dibatalkan.')"
+        >
+            @csrf
+            @method('DELETE')
+
+            <button
+                type="submit"
+                class="inline-flex items-center px-3 py-2 rounded-lg bg-red-100 text-red-700 text-xs font-semibold hover:bg-red-200">
+                Hapus
+            </button>
+        </form>
+
+    </div>
+</td>
 
                                     </tr>
 

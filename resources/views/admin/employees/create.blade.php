@@ -85,27 +85,27 @@
                             />
                         </div>
 
-                        {{-- Department --}}
-                        <div>
-                            <x-input-label
-                                for="department"
-                                value="Departemen"
-                            />
+                       {{-- Pokja --}}
+<div>
+    <x-input-label
+        for="pokja"
+        value="Pokja"
+    />
 
-                            <x-text-input
-                                id="department"
-                                name="department"
-                                type="text"
-                                class="block mt-1 w-full"
-                                value="{{ old('department') }}"
-                                required
-                            />
+    <x-text-input
+        id="pokja"
+        name="pokja"
+        type="text"
+        class="block mt-1 w-full"
+        value="{{ old('pokja') }}"
+        required
+    />
 
-                            <x-input-error
-                                :messages="$errors->get('department')"
-                                class="mt-2"
-                            />
-                        </div>
+    <x-input-error
+        :messages="$errors->get('pokja')"
+        class="mt-2"
+    />
+</div>
 
                         {{-- Position --}}
                         <div>

@@ -188,7 +188,7 @@
                                         </th>
 
                                         <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                                            Departemen
+                                           Pokja
                                         </th>
 
                                         <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -258,9 +258,9 @@
                                             </td>
 
 
-                                            {{-- Departemen --}}
+                                            {{-- Pokja --}}
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                {{ $candidate->employee->department }}
+                                                {{ $candidate->employee->pokja }}
                                             </td>
 
 
