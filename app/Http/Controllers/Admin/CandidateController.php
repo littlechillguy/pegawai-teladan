@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Candidate;
 use App\Models\Period;
+use App\Services\ScoreCalculationService;
 use Illuminate\Http\Request;
 
 class CandidateController extends Controller
@@ -13,12 +14,13 @@ class CandidateController extends Controller
     {
         $activePeriod = Period::where('status', 'active')->first();
 
-        $candidates = $activePeriod
-            ? Candidate::with('employee')
-                ->where('period_id', $activePeriod->id)
-                ->orderBy('created_at', 'desc')
-                ->get()
-            : collect();
+        if ($activePeriod) {
+            $candidates = $activePeriod->candidates()
+                ->with('employee')
+                ->get();
+        } else {
+            $candidates = collect();
+        }
 
         return view('admin.candidates.index', compact(
             'activePeriod',
@@ -36,27 +38,36 @@ class CandidateController extends Controller
         return view('admin.candidates.edit', compact('candidate'));
     }
 
-    public function update(Request $request, Candidate $candidate)
-    {
-        $validated = $request->validate([
-            'attendance_percentage' => [
-                'nullable',
-                'numeric',
-                'min:0',
-                'max:100',
-            ],
-        ]);
+    public function update(
+    Request $request,
+    Candidate $candidate,
+    ScoreCalculationService $scoreCalculationService
+) {
+    $validated = $request->validate([
+        'attendance_percentage' => [
+            'nullable',
+            'numeric',
+            'min:0',
+            'max:100',
+        ],
+    ]);
 
-        $candidate->update([
-            'attendance_percentage' =>
-                $validated['attendance_percentage'] ?? null,
-        ]);
+    $candidate->update([
+        'attendance_percentage' =>
+            $validated['attendance_percentage'] ?? null,
+    ]);
 
-        return redirect()
-            ->route('admin.candidates.index')
-            ->with(
-                'success',
-                'Data kandidat berhasil diperbarui.'
-            );
-    }
+    $finalScore = $scoreCalculationService->calculate($candidate);
+
+    $candidate->update([
+        'final_score' => $finalScore,
+    ]);
+
+    return redirect()
+        ->route('admin.candidates.index')
+        ->with(
+            'success',
+            'Data kandidat berhasil diperbarui dan nilai akhir berhasil dihitung ulang.'
+        );
+}
 }

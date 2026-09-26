@@ -1,169 +1,304 @@
 <x-app-layout>
 
     <x-slot name="header">
+        <div>
+            <h2 class="text-xl font-semibold text-gray-800">
+                Hasil Penilaian
+            </h2>
 
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-
-            <div>
-                <h2 class="text-xl font-semibold text-gray-800">
-                    Hasil Penilaian
-                </h2>
-
-                <p class="text-sm text-gray-500 mt-1">
-                    Hasil penilaian kandidat pada periode aktif
-                </p>
-            </div>
-
+            <p class="text-sm text-gray-500 mt-1">
+                Hasil penilaian kandidat pada periode aktif.
+            </p>
         </div>
-
     </x-slot>
 
 
     <div class="py-8">
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
 
-            {{-- Flash Success --}}
+            {{-- ========================================================= --}}
+            {{-- FLASH SUCCESS --}}
+            {{-- ========================================================= --}}
+
             @if (session('success'))
 
-                <div class="bg-green-50 border border-green-200 text-green-700 rounded-xl p-4">
-                    {{ session('success') }}
-                </div>
+                <div class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3">
 
-            @endif
+                    <div class="flex items-start gap-3">
 
+                        <svg
+                            class="w-5 h-5 text-green-600 mt-0.5 shrink-0"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M5 13l4 4L19 7"
+                            />
+                        </svg>
 
-            {{-- Flash Error --}}
-            @if (session('error'))
+                        <p class="text-sm text-green-700">
+                            {{ session('success') }}
+                        </p>
 
-                <div class="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4">
-                    {{ session('error') }}
-                </div>
-
-            @endif
-
-
-            {{-- Validation Error --}}
-            @if ($errors->any())
-
-                <div class="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4">
-
-                    <ul class="list-disc list-inside text-sm space-y-1">
-
-                        @foreach ($errors->all() as $error)
-
-                            <li>
-                                {{ $error }}
-                            </li>
-
-                        @endforeach
-
-                    </ul>
-
-                </div>
-
-            @endif
-
-
-            {{-- Tidak ada periode aktif --}}
-            @if (!$activePeriod)
-
-                <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-10 text-center">
-
-                    <div class="text-5xl mb-4">
-                        📅
                     </div>
 
-                    <h3 class="text-lg font-bold text-gray-800">
-                        Belum Ada Periode Aktif
-                    </h3>
+                </div>
 
-                    <p class="text-sm text-gray-500 mt-2">
-                        Hasil penilaian akan muncul ketika terdapat periode yang sedang aktif.
-                    </p>
+            @endif
+
+
+            {{-- ========================================================= --}}
+            {{-- FLASH ERROR --}}
+            {{-- ========================================================= --}}
+
+            @if (session('error'))
+
+                <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+
+                    <div class="flex items-start gap-3">
+
+                        <svg
+                            class="w-5 h-5 text-red-600 mt-0.5 shrink-0"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 9v3.75m0 3.75h.007M10.29 3.86l-7.5 13A2 2 0 004.5 19.75h15a2 2 0 001.71-2.89l-7.5-13a2 2 0 00-3.42 0z"
+                            />
+                        </svg>
+
+                        <p class="text-sm text-red-700">
+                            {{ session('error') }}
+                        </p>
+
+                    </div>
 
                 </div>
+
+            @endif
+
+
+            {{-- ========================================================= --}}
+            {{-- VALIDATION ERROR --}}
+            {{-- ========================================================= --}}
+
+            @if ($errors->any())
+
+                <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3">
+
+                    <div class="text-sm text-red-700">
+
+                        <ul class="list-disc list-inside space-y-1">
+
+                            @foreach ($errors->all() as $error)
+
+                                <li>
+                                    {{ $error }}
+                                </li>
+
+                            @endforeach
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            @endif
+
+
+            {{-- ========================================================= --}}
+            {{-- TIDAK ADA PERIODE AKTIF --}}
+            {{-- ========================================================= --}}
+
+            @if (!$activePeriod)
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+
+                    <div class="p-10 text-center">
+
+                        <div class="w-14 h-14 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4">
+
+                            <svg
+                                class="w-7 h-7 text-gray-400"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="1.5"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h6l5 5v11a2 2 0 01-2 2z"
+                                />
+                            </svg>
+
+                        </div>
+
+                        <h3 class="text-lg font-semibold text-gray-800">
+                            Tidak Ada Periode Aktif
+                        </h3>
+
+                        <p class="text-sm text-gray-500 mt-2">
+                            Belum ada periode pemilihan pegawai teladan yang sedang aktif.
+                        </p>
+
+                    </div>
+
+                </div>
+
 
             @else
 
 
-                {{-- Header Periode --}}
-                <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-6">
+                {{-- ===================================================== --}}
+                {{-- HEADER PERIODE --}}
+                {{-- ===================================================== --}}
 
-                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-6">
 
-                        <div>
+                    <div class="p-6">
 
-                            <p class="text-sm font-medium text-gray-500">
-                                Periode Aktif
-                            </p>
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
 
-                            <h3 class="text-2xl font-bold text-gray-800 mt-1">
-                                {{ $activePeriod->name }}
-                            </h3>
+                            <div>
 
-                            <p class="text-sm text-gray-500 mt-2">
+                                <div class="flex flex-wrap items-center gap-3">
 
-                                {{ $activePeriod->start_date->format('d F Y') }}
-
-                                -
-
-                                {{ $activePeriod->end_date->format('d F Y') }}
-
-                            </p>
-
-                        </div>
+                                    <h3 class="text-lg font-semibold text-gray-800">
+                                        {{ $activePeriod->name }}
+                                    </h3>
 
 
-                        {{-- Status keseluruhan --}}
-                        <div>
+                                    {{-- STATUS PERIODE --}}
 
-                            @if ($allComplete)
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
 
-                                <div class="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-green-50 border border-green-200 text-green-700">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5"></span>
 
-                                    <span class="text-lg">
-                                        ✓
+                                        Aktif
+
                                     </span>
 
-                                    <div>
 
-                                        <p class="font-semibold text-sm">
-                                            Seluruh Data Lengkap
-                                        </p>
+                                    {{-- STATUS VOTING --}}
 
-                                        <p class="text-xs mt-0.5">
-                                            Sistem telah menentukan hasil berdasarkan nilai tertinggi.
-                                        </p>
+                                    @if ($activePeriod->voting_completed)
 
-                                    </div>
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-800 text-white">
+
+                                            <svg
+                                                class="w-3.5 h-3.5"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M5 13l4 4L19 7"
+                                                />
+                                            </svg>
+
+                                            Voting Selesai
+
+                                        </span>
+
+                                    @endif
 
                                 </div>
 
-                            @else
 
-                                <div class="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-yellow-50 border border-yellow-200 text-yellow-700">
+                                <p class="text-sm text-gray-500 mt-2">
 
-                                    <span class="text-lg">
-                                        ⏳
-                                    </span>
+                                    {{ $activePeriod->start_date->format('d M Y') }}
 
-                                    <div>
+                                    -
 
-                                        <p class="font-semibold text-sm">
-                                            Penilaian Belum Selesai
-                                        </p>
+                                    {{ $activePeriod->end_date->format('d M Y') }}
 
-                                        <p class="text-xs mt-0.5">
-                                            Sistem menunggu seluruh data kandidat lengkap.
-                                        </p>
+                                </p>
+
+                            </div>
+
+
+                            {{-- ================================================= --}}
+                            {{-- TOMBOL SELESAIKAN / STATUS SELESAI --}}
+                            {{-- ================================================= --}}
+
+                            <div class="shrink-0">
+
+                                @if ($activePeriod->voting_completed)
+
+                                    <div class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm font-semibold">
+
+                                        <svg
+                                            class="w-5 h-5"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M5 13l4 4L19 7"
+                                            />
+                                        </svg>
+
+                                        Voting Telah Diselesaikan
 
                                     </div>
 
-                                </div>
+                                @else
 
-                            @endif
+                                    <form
+                                        action="{{ route('admin.assessment-results.complete', $activePeriod) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Apakah Anda yakin ingin menyelesaikan penilaian periode ini? Sistem akan menentukan Pegawai Teladan berdasarkan nilai akhir tertinggi.')"
+                                    >
+
+                                        @csrf
+
+                                        <button
+                                            type="submit"
+                                            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-gray-800 text-white text-sm font-semibold hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition"
+                                        >
+
+                                            <svg
+                                                class="w-4 h-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M5 13l4 4L19 7"
+                                                />
+                                            </svg>
+
+                                            Selesaikan Penilaian
+
+                                        </button>
+
+                                    </form>
+
+                                @endif
+
+                            </div>
 
                         </div>
 
@@ -172,157 +307,569 @@
                 </div>
 
 
-                {{-- Ringkasan --}}
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                {{-- ===================================================== --}}
+                {{-- KARTU PEGAWAI TELADAN --}}
+                {{-- HANYA MUNCUL SETELAH VOTING SELESAI --}}
+                {{-- ===================================================== --}}
 
-                    {{-- Kandidat --}}
-                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                @if ($activePeriod->voting_completed && $candidates->where('is_winner', true)->isNotEmpty())
 
-                        <p class="text-sm text-gray-500">
-                            Total Kandidat
-                        </p>
+                    @php
+                        $winner = $candidates->firstWhere('is_winner', true);
+                    @endphp
 
-                        <p class="text-3xl font-bold text-gray-800 mt-2">
-                            {{ $candidates->count() }}
-                        </p>
+
+                    <div class="mb-6 rounded-xl border border-gray-300 bg-gray-50 overflow-hidden">
+
+                        {{-- HEADER KARTU --}}
+
+                        <div class="px-6 py-4 border-b border-gray-200 bg-white">
+
+                            <div class="flex items-center gap-3">
+
+                                <div class="w-10 h-10 rounded-lg bg-gray-800 text-white flex items-center justify-center">
+
+                                    <svg
+                                        class="w-5 h-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="1.5"
+                                            d="M12 3l2.09 4.26L19 8.27l-3.5 3.41.83 4.82L12 14.27l-4.33 2.23.83-4.82L5 8.27l4.91-1.01L12 3z"
+                                        />
+                                    </svg>
+
+                                </div>
+
+
+                                <div>
+
+                                    <h3 class="font-semibold text-gray-800">
+                                        Pegawai Teladan
+                                    </h3>
+
+                                    <p class="text-xs text-gray-500">
+                                        Hasil akhir {{ $activePeriod->name }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {{-- ISI KARTU --}}
+
+                        <div class="p-6">
+
+                            <div class="flex flex-col md:flex-row md:items-center gap-6">
+
+
+                                {{-- FOTO --}}
+
+                                <div class="shrink-0">
+
+                                    @if ($winner->employee->photo)
+
+                                        <img
+                                            src="{{ asset('storage/' . $winner->employee->photo) }}"
+                                            alt="{{ $winner->employee->name }}"
+                                            class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-sm"
+                                        >
+
+                                    @else
+
+                                        <div class="w-24 h-24 rounded-full bg-white border-4 border-white shadow-sm flex items-center justify-center">
+
+                                            <span class="text-3xl font-bold text-gray-500">
+                                                {{ strtoupper(substr($winner->employee->name, 0, 1)) }}
+                                            </span>
+
+                                        </div>
+
+                                    @endif
+
+                                </div>
+
+
+                                {{-- INFORMASI --}}
+
+                                <div class="flex-1">
+
+                                    <div class="flex flex-wrap items-center gap-2">
+
+                                        <h4 class="text-xl font-bold text-gray-800">
+                                            {{ $winner->employee->name }}
+                                        </h4>
+
+
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-800 text-white text-xs font-semibold">
+
+                                            <svg
+                                                class="w-3.5 h-3.5"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="1.5"
+                                                    d="M12 3l2.09 4.26L19 8.27l-3.5 3.41.83 4.82L12 14.27l-4.33 2.23.83-4.82L5 8.27l4.91-1.01L12 3z"
+                                                />
+                                            </svg>
+
+                                            Pegawai Teladan
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        NIP: {{ $winner->employee->nip }}
+                                    </p>
+
+                                    <p class="text-sm text-gray-500">
+                                        {{ $winner->employee->pokja ?? '-' }}
+                                        ·
+                                        {{ $winner->employee->position ?? '-' }}
+                                    </p>
+
+
+                                    <p class="text-sm text-gray-600 mt-3">
+
+                                        Ditetapkan sebagai
+                                        <strong class="text-gray-800">
+                                            Pegawai Teladan
+                                        </strong>
+
+                                        pada
+                                        <strong class="text-gray-800">
+                                            {{ $activePeriod->name }}
+                                        </strong>.
+
+                                    </p>
+
+                                </div>
+
+
+                                {{-- NILAI --}}
+
+                                <div class="shrink-0 md:text-right">
+
+                                    <p class="text-xs text-gray-500">
+                                        Nilai Akhir
+                                    </p>
+
+                                    <p class="text-3xl font-bold text-gray-800 mt-1">
+                                        {{ number_format($winner->final_score, 2) }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
-
-                    {{-- Evaluator --}}
-                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-
-                        <p class="text-sm text-gray-500">
-                            Evaluator Aktif
-                        </p>
-
-                        <p class="text-3xl font-bold text-gray-800 mt-2">
-                            {{ $totalEvaluators }}
-                        </p>
-
-                        <p class="text-xs text-gray-400 mt-1">
-                            Kandidat tidak menilai dirinya sendiri
-                        </p>
-
-                    </div>
+                @endif
 
 
-                    {{-- Status --}}
-                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                {{-- ===================================================== --}}
+                {{-- INFORMASI STATUS --}}
+                {{-- ===================================================== --}}
 
-                        <p class="text-sm text-gray-500">
-                            Status Penilaian
-                        </p>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 mb-6">
 
-                        @if ($allComplete)
+                    <div class="p-6">
 
-                            <p class="text-lg font-bold text-green-600 mt-2">
-                                Selesai
-                            </p>
+                        <div class="flex items-start gap-4">
 
-                        @else
+                            <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
 
-                            <p class="text-lg font-bold text-yellow-600 mt-2">
-                                Berlangsung
-                            </p>
+                                <svg
+                                    class="w-5 h-5 text-gray-600"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.5"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h6l5 5v11a2 2 0 01-2 2z"
+                                    />
+                                </svg>
 
-                        @endif
+                            </div>
+
+
+                            <div>
+
+                                <h3 class="text-sm font-semibold text-gray-800">
+                                    @if ($activePeriod->voting_completed)
+                                        Penilaian Telah Diselesaikan
+                                    @else
+                                        Proses Penilaian
+                                    @endif
+                                </h3>
+
+
+                                @if ($activePeriod->voting_completed)
+
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        Sesi voting pada periode ini telah diselesaikan.
+                                        Pegawai Teladan telah ditetapkan berdasarkan nilai akhir tertinggi.
+                                    </p>
+
+                                    <p class="text-xs text-gray-400 mt-2">
+                                        Periode masih berstatus aktif sampai proses periode diselesaikan oleh admin.
+                                    </p>
+
+                                @else
+
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        Pastikan seluruh kandidat telah memiliki persentase kehadiran,
+                                        seluruh evaluator telah melakukan penilaian, dan nilai akhir
+                                        setiap kandidat telah tersedia sebelum menyelesaikan penilaian.
+                                    </p>
+
+                                    <p class="text-xs text-gray-400 mt-2">
+                                        Sistem akan melakukan pengecekan kembali saat tombol
+                                        <strong>Selesaikan Penilaian</strong> ditekan.
+                                    </p>
+
+                                @endif
+
+                            </div>
+
+                        </div>
 
                     </div>
 
                 </div>
 
 
-                {{-- Tidak ada kandidat --}}
+                {{-- ===================================================== --}}
+                {{-- RINGKASAN --}}
+                {{-- ===================================================== --}}
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
+
+
+                    {{-- TOTAL KANDIDAT --}}
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+
+                        <div class="flex items-center justify-between">
+
+                            <div>
+
+                                <p class="text-sm text-gray-500">
+                                    Total Kandidat
+                                </p>
+
+                                <p class="text-2xl font-bold text-gray-800 mt-1">
+                                    {{ $candidates->count() }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+
+                                <svg
+                                    class="w-5 h-5 text-gray-600"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.5"
+                                        d="M17 20h5V4H2v16h5m10 0v-4H7v4m10 0H7"
+                                    />
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {{-- DATA LENGKAP --}}
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+
+                        <div class="flex items-center justify-between">
+
+                            <div>
+
+                                <p class="text-sm text-gray-500">
+                                    Data Lengkap
+                                </p>
+
+                                <p class="text-2xl font-bold text-gray-800 mt-1">
+                                    {{ $candidates->where('result_status', 'complete')->count() + $candidates->where('result_status', 'winner')->count() }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+
+                                <svg
+                                    class="w-5 h-5 text-gray-600"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.5"
+                                        d="M5 13l4 4L19 7"
+                                    />
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {{-- MENUNGGU --}}
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+
+                        <div class="flex items-center justify-between">
+
+                            <div>
+
+                                <p class="text-sm text-gray-500">
+                                    Menunggu Kelengkapan
+                                </p>
+
+                                <p class="text-2xl font-bold text-gray-800 mt-1">
+                                    {{ $candidates->whereNotIn('result_status', ['complete', 'winner'])->count() }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+
+                                <svg
+                                    class="w-5 h-5 text-gray-600"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.5"
+                                        d="M12 8v4l3 2"
+                                    />
+                                    <circle
+                                        cx="12"
+                                        cy="12"
+                                        r="9"
+                                        fill="none"
+                                    />
+                                </svg>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {{-- ===================================================== --}}
+                {{-- TIDAK ADA KANDIDAT --}}
+                {{-- ===================================================== --}}
+
                 @if ($candidates->isEmpty())
 
-                    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-10 text-center">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200">
 
-                        <div class="text-5xl mb-4">
-                            👥
+                        <div class="p-10 text-center">
+
+                            <div class="w-14 h-14 mx-auto rounded-full bg-gray-100 flex items-center justify-center mb-4">
+
+                                <svg
+                                    class="w-7 h-7 text-gray-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="1.5"
+                                        d="M17 20h5V4H2v16h5m10 0v-4H7v4"
+                                    />
+                                </svg>
+
+                            </div>
+
+
+                            <h3 class="text-lg font-semibold text-gray-800">
+                                Belum Ada Kandidat
+                            </h3>
+
+
+                            <p class="text-sm text-gray-500 mt-2">
+                                Belum ada pegawai yang dipilih sebagai kandidat pada periode ini.
+                            </p>
+
+
+                            <div class="mt-5">
+
+                                <a
+                                    href="{{ route('admin.employees.index') }}"
+                                    class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-800 text-white text-sm font-semibold hover:bg-gray-700 transition"
+                                >
+                                    Kelola Kandidat
+                                </a>
+
+                            </div>
+
                         </div>
 
-                        <h3 class="text-lg font-bold text-gray-800">
-                            Belum Ada Kandidat
-                        </h3>
-
-                        <p class="text-sm text-gray-500 mt-2">
-                            Silakan tambahkan kandidat terlebih dahulu pada periode aktif.
-                        </p>
-
-                        <a
-                            href="{{ route('admin.candidates.index') }}"
-                            class="inline-flex items-center px-5 py-2.5 mt-5 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-medium"
-                        >
-                            Kelola Kandidat
-                        </a>
-
                     </div>
+
 
                 @else
 
 
-                    {{-- Daftar Kandidat --}}
-                    <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+                    {{-- ================================================= --}}
+                    {{-- DAFTAR KANDIDAT --}}
+                    {{-- ================================================= --}}
 
-                        <div class="p-6 border-b border-gray-100">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
 
-                            <h3 class="text-lg font-bold text-gray-800">
-                                Hasil Kandidat
+
+                        {{-- HEADER --}}
+
+                        <div class="px-6 py-5 border-b border-gray-200">
+
+                            <h3 class="font-semibold text-gray-800">
+                                Daftar Kandidat
                             </h3>
 
                             <p class="text-sm text-gray-500 mt-1">
-                                Kandidat diurutkan berdasarkan nilai akhir tertinggi.
+                                Ringkasan hasil penilaian setiap kandidat pada periode aktif.
                             </p>
 
                         </div>
 
 
+                        {{-- LIST --}}
+
                         <div class="divide-y divide-gray-100">
+
 
                             @foreach ($candidates as $index => $candidate)
 
-                                <div class="p-6">
 
-                                    <div class="flex flex-col xl:flex-row xl:items-center gap-6">
+                                {{-- ================================================= --}}
+                                {{-- KANDIDAT --}}
+                                {{-- ================================================= --}}
+
+                                <div
+                                    class="p-6 transition
+                                    {{ $candidate->is_winner
+                                        ? 'bg-gray-50 border-l-4 border-gray-800'
+                                        : 'hover:bg-gray-50' }}"
+                                >
+
+                                    <div class="flex flex-col lg:flex-row lg:items-center gap-6">
 
 
-                                        {{-- Ranking --}}
-                                        <div class="flex-shrink-0">
+                                        {{-- RANK --}}
 
-                                            @if ($candidate->is_winner)
+                                        <div class="shrink-0">
 
-                                                <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-xl">
-                                                    🏆
-                                                </div>
+                                            <div class="w-10 h-10 rounded-full
+                                                {{ $candidate->is_winner
+                                                    ? 'bg-gray-800 text-white'
+                                                    : 'bg-gray-100 text-gray-700' }}
+                                                flex items-center justify-center"
+                                            >
 
-                                            @else
+                                                @if ($candidate->is_winner)
 
-                                                <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-500">
-                                                    {{ $index + 1 }}
-                                                </div>
+                                                    <svg
+                                                        class="w-5 h-5"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            stroke-width="1.5"
+                                                            d="M12 3l2.09 4.26L19 8.27l-3.5 3.41.83 4.82L12 14.27l-4.33 2.23.83-4.82L5 8.27l4.91-1.01L12 3z"
+                                                        />
+                                                    </svg>
 
-                                            @endif
+                                                @else
+
+                                                    <span class="text-sm font-bold">
+                                                        {{ $index + 1 }}
+                                                    </span>
+
+                                                @endif
+
+                                            </div>
 
                                         </div>
 
 
-                                        {{-- Foto --}}
-                                        <div class="flex-shrink-0">
+                                        {{-- FOTO --}}
+
+                                        <div class="shrink-0">
 
                                             @if ($candidate->employee->photo)
 
                                                 <img
                                                     src="{{ asset('storage/' . $candidate->employee->photo) }}"
                                                     alt="{{ $candidate->employee->name }}"
-                                                    class="w-16 h-16 rounded-full object-cover border border-gray-200"
+                                                    class="{{ $candidate->is_winner ? 'w-20 h-20' : 'w-16 h-16' }} rounded-full object-cover border {{ $candidate->is_winner ? 'border-gray-300' : 'border-gray-200' }}"
                                                 >
 
                                             @else
 
-                                                <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center text-xl font-bold text-gray-500">
+                                                <div class="{{ $candidate->is_winner ? 'w-20 h-20' : 'w-16 h-16' }} rounded-full bg-gray-100 flex items-center justify-center border border-gray-200">
 
-                                                    {{ strtoupper(substr($candidate->employee->name, 0, 1)) }}
+                                                    <svg
+                                                        class="{{ $candidate->is_winner ? 'w-10 h-10' : 'w-8 h-8' }} text-gray-400"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            stroke-width="1.5"
+                                                            d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 20.25a8.25 8.25 0 0115 0"
+                                                        />
+                                                    </svg>
 
                                                 </div>
 
@@ -331,20 +878,39 @@
                                         </div>
 
 
-                                        {{-- Informasi --}}
+                                        {{-- INFORMASI KANDIDAT --}}
+
                                         <div class="flex-1 min-w-0">
 
-                                            <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+                                            <div class="flex flex-wrap items-center gap-2">
 
-                                                <h4 class="text-lg font-bold text-gray-800">
+                                                <h4 class="{{ $candidate->is_winner ? 'text-lg font-bold text-gray-900' : 'font-semibold text-gray-800' }}">
+
                                                     {{ $candidate->employee->name }}
+
                                                 </h4>
 
 
                                                 @if ($candidate->is_winner)
 
-                                                    <span class="inline-flex w-fit items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
-                                                        🏆 Pegawai Teladan
+                                                    <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-800 text-white text-xs font-semibold">
+
+                                                        <svg
+                                                            class="w-3.5 h-3.5"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path
+                                                                stroke-linecap="round"
+                                                                stroke-linejoin="round"
+                                                                stroke-width="1.5"
+                                                                d="M12 3l2.09 4.26L19 8.27l-3.5 3.41.83 4.82L12 14.27l-4.33 2.23.83-4.82L5 8.27l4.91-1.01L12 3z"
+                                                            />
+                                                        </svg>
+
+                                                        Pegawai Teladan
+
                                                     </span>
 
                                                 @endif
@@ -356,152 +922,167 @@
                                                 NIP: {{ $candidate->employee->nip }}
                                             </p>
 
+
                                             <p class="text-sm text-gray-500">
-                                                {{ $candidate->employee->department }}
-                                                •
-                                                {{ $candidate->employee->position }}
+                                                {{ $candidate->employee->pokja ?? '-' }}
+                                                ·
+                                                {{ $candidate->employee->position ?? '-' }}
                                             </p>
-
-
-                                            {{-- Progress --}}
-                                            <div class="mt-4 max-w-xl">
-
-                                                <div class="flex items-center justify-between mb-1">
-
-                                                    <span class="text-xs text-gray-500">
-                                                        Progress Penilaian
-                                                    </span>
-
-                                                    <span class="text-xs font-semibold text-gray-700">
-                                                        {{ $candidate->assessment_progress }}%
-                                                    </span>
-
-                                                </div>
-
-
-                                                <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-
-                                                    <div
-                                                        class="h-2 rounded-full
-                                                        @if ($candidate->assessment_progress >= 100)
-                                                            bg-green-500
-                                                        @elseif ($candidate->assessment_progress > 0)
-                                                            bg-yellow-500
-                                                        @else
-                                                            bg-gray-300
-                                                        @endif"
-                                                        style="width: {{ min(100, $candidate->assessment_progress) }}%"
-                                                    ></div>
-
-                                                </div>
-
-
-                                                <p class="text-xs text-gray-400 mt-1">
-
-                                                    {{ $candidate->submitted_assessments_count }}
-
-                                                    dari
-
-                                                    {{ $candidate->total_evaluators }}
-
-                                                    evaluator telah menilai
-
-                                                </p>
-
-                                            </div>
 
                                         </div>
 
 
-                                        {{-- Attendance --}}
-                                        <div class="xl:w-32">
+                                        {{-- PROGRESS PENILAIAN --}}
+
+                                        <div class="w-full lg:w-52 shrink-0">
+
+                                            <div class="flex items-center justify-between mb-2">
+
+                                                <span class="text-xs font-medium text-gray-500">
+                                                    Progress Penilaian
+                                                </span>
+
+                                                <span class="text-xs font-semibold text-gray-700">
+                                                    {{ $candidate->assessment_progress }}%
+                                                </span>
+
+                                            </div>
+
+
+                                            <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+
+                                                <div
+                                                    class="h-full bg-gray-700 rounded-full transition-all"
+                                                    style="width: {{ min($candidate->assessment_progress, 100) }}%"
+                                                ></div>
+
+                                            </div>
+
+
+                                            <p class="text-xs text-gray-400 mt-2">
+
+                                                {{ $candidate->submitted_assessments_count }}
+
+                                                /
+
+                                                {{ $candidate->total_evaluators }}
+
+                                                evaluator
+
+                                            </p>
+
+                                        </div>
+
+
+                                        {{-- KEHADIRAN --}}
+
+                                        <div class="w-full lg:w-28 shrink-0">
 
                                             <p class="text-xs text-gray-500">
                                                 Kehadiran
                                             </p>
 
 
-                                            @if ($candidate->attendance_percentage !== null)
+                                            <p class="text-lg font-bold text-gray-800 mt-1">
 
-                                                <p class="text-xl font-bold text-gray-800 mt-1">
+                                                @if ($candidate->attendance_percentage !== null)
+
                                                     {{ number_format($candidate->attendance_percentage, 2) }}%
-                                                </p>
 
-                                            @else
+                                                @else
 
-                                                <p class="text-sm font-semibold text-yellow-600 mt-1">
-                                                    Belum diisi
-                                                </p>
+                                                    -
 
-                                            @endif
+                                                @endif
+
+                                            </p>
 
                                         </div>
 
 
-                                        {{-- Final Score --}}
-                                        <div class="xl:w-32">
+                                        {{-- NILAI AKHIR --}}
+
+                                        <div class="w-full lg:w-28 shrink-0">
 
                                             <p class="text-xs text-gray-500">
                                                 Nilai Akhir
                                             </p>
 
 
-                                            @if ($candidate->final_score !== null)
+                                            <p class="{{ $candidate->is_winner ? 'text-2xl' : 'text-lg' }} font-bold text-gray-800 mt-1">
 
-                                                <p class="text-2xl font-bold text-indigo-600 mt-1">
+                                                @if ($candidate->final_score !== null)
+
                                                     {{ number_format($candidate->final_score, 2) }}
-                                                </p>
 
-                                                <p class="text-xs text-gray-400">
-                                                    / 100
-                                                </p>
+                                                @else
 
-                                            @else
+                                                    -
 
-                                                <p class="text-sm font-semibold text-gray-400 mt-1">
-                                                    Belum tersedia
-                                                </p>
+                                                @endif
 
-                                            @endif
+                                            </p>
 
                                         </div>
 
 
-                                        {{-- Status --}}
-                                        <div class="xl:w-40">
+                                        {{-- STATUS --}}
 
-                                            @if ($candidate->result_status === 'winner')
+                                        <div class="w-full lg:w-32 shrink-0">
 
-                                                <span class="inline-flex items-center px-3 py-2 rounded-lg bg-yellow-100 text-yellow-700 text-sm font-semibold">
-                                                    🏆 Pemenang
-                                                </span>
-
-
-                                            @elseif ($candidate->result_status === 'complete')
-
-                                                <span class="inline-flex items-center px-3 py-2 rounded-lg bg-green-100 text-green-700 text-sm font-semibold">
-                                                    ✓ Selesai
-                                                </span>
+                                            <p class="text-xs text-gray-500 mb-2">
+                                                Status
+                                            </p>
 
 
-                                            @elseif ($candidate->result_status === 'attendance')
+                                            @if ($candidate->result_status === 'attendance')
 
-                                                <span class="inline-flex items-center px-3 py-2 rounded-lg bg-red-100 text-red-700 text-sm font-semibold">
-                                                    Attendance belum diisi
+                                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">
+                                                    Kehadiran Belum Diisi
                                                 </span>
 
 
                                             @elseif ($candidate->result_status === 'assessment')
 
-                                                <span class="inline-flex items-center px-3 py-2 rounded-lg bg-yellow-100 text-yellow-700 text-sm font-semibold">
-                                                    Menunggu Penilaian
+                                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">
+                                                    Penilaian Belum Lengkap
+                                                </span>
+
+
+                                            @elseif ($candidate->result_status === 'calculation')
+
+                                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">
+                                                    Nilai Belum Tersedia
+                                                </span>
+
+
+                                            @elseif ($candidate->result_status === 'winner')
+
+                                                <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-gray-800 text-white text-xs font-semibold">
+
+                                                    <svg
+                                                        class="w-3.5 h-3.5"
+                                                        fill="none"
+                                                        stroke="currentColor"
+                                                        viewBox="0 0 24 24"
+                                                    >
+                                                        <path
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            stroke-width="1.5"
+                                                            d="M12 3l2.09 4.26L19 8.27l-3.5 3.41.83 4.82L12 14.27l-4.33 2.23.83-4.82L5 8.27l4.91-1.01L12 3z"
+                                                        />
+                                                    </svg>
+
+                                                    Pegawai Teladan
+
                                                 </span>
 
 
                                             @else
 
-                                                <span class="inline-flex items-center px-3 py-2 rounded-lg bg-gray-100 text-gray-600 text-sm font-semibold">
-                                                    Menunggu Perhitungan
+                                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">
+                                                    Lengkap
                                                 </span>
 
                                             @endif
@@ -509,21 +1090,40 @@
                                         </div>
 
 
-                                        {{-- Detail --}}
-                                        <div class="flex-shrink-0">
+                                        {{-- DETAIL --}}
+
+                                        <div class="shrink-0">
 
                                             <a
                                                 href="{{ route('admin.assessment-results.show', $candidate) }}"
-                                                class="inline-flex items-center justify-center px-4 py-2.5 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-medium"
+                                                class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
                                             >
-                                                Lihat Detail
+
+                                                Detail
+
+                                                <svg
+                                                    class="w-4 h-4"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M9 5l7 7-7 7"
+                                                    />
+                                                </svg>
+
                                             </a>
 
                                         </div>
 
+
                                     </div>
 
                                 </div>
+
 
                             @endforeach
 
@@ -532,6 +1132,7 @@
                     </div>
 
                 @endif
+
 
             @endif
 

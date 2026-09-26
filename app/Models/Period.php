@@ -15,6 +15,7 @@ class Period extends Model
         'start_date',
         'end_date',
         'status',
+        'voting_completed',
     ];
 
     protected function casts(): array
@@ -22,11 +23,12 @@ class Period extends Model
         return [
             'start_date' => 'date',
             'end_date' => 'date',
+            'voting_completed' => 'boolean',
         ];
     }
 
     /**
-     * Kandidat yang mengikuti pemilihan pada periode ini
+     * Kandidat yang mengikuti pemilihan pada periode ini.
      */
     public function candidates(): HasMany
     {
@@ -34,7 +36,7 @@ class Period extends Model
     }
 
     /**
-     * Seluruh penilaian pada periode ini
+     * Seluruh penilaian pada periode ini.
      */
     public function assessments(): HasMany
     {

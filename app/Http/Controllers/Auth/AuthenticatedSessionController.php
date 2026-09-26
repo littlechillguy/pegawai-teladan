@@ -37,6 +37,35 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        /*
+        |--------------------------------------------------------------------------
+        | Password Default
+        |--------------------------------------------------------------------------
+        | Jika user/employee masih menggunakan password default,
+        | arahkan langsung ke halaman ubah password.
+        |
+        | Admin tidak terkena aturan ini.
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $user->role !== 'admin' &&
+            $credentials['password'] === 'password123'
+        ) {
+            return redirect()
+                ->route('password.edit')
+                ->with(
+                    'warning',
+                    'Password Anda masih menggunakan password default. Silakan ganti password terlebih dahulu demi keamanan akun.'
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Redirect Berdasarkan Role
+        |--------------------------------------------------------------------------
+        */
+
         if ($user->role === 'admin') {
             return redirect()->intended('/admin/dashboard');
         }

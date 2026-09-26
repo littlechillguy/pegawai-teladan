@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AssessmentResultController;
 use App\Http\Controllers\Employee\DashboardController as EmployeeDashboardController;
 use App\Http\Controllers\Employee\AssessmentController;
 use App\Http\Controllers\Admin\HallOfFameController;
+use App\Http\Controllers\Auth\PasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,6 +28,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/assessment/{candidate}', [AssessmentController::class, 'store'])
         ->name('assessment.store');
+
+    Route::get('/change-password', [PasswordController::class, 'edit'])
+        ->name('password.edit');
+
+    Route::put('/change-password', [PasswordController::class, 'update'])
+        ->name('password.update');
 
 });
 
@@ -61,7 +68,7 @@ Route::middleware(['auth', 'admin'])
 
         Route::put('/employees/{employee}', [EmployeeController::class, 'update'])
             ->name('employees.update');
-            
+
 
         // Pilih pegawai sebagai kandidat periode aktif
         Route::post(
@@ -76,7 +83,7 @@ Route::middleware(['auth', 'admin'])
         )->name('employees.cancel-candidate');
 
         Route::delete('/employees/{employee}', [EmployeeController::class, 'destroy'])
-    ->name('employees.destroy');
+            ->name('employees.destroy');
 
 
         // =========================
@@ -86,6 +93,12 @@ Route::middleware(['auth', 'admin'])
         Route::resource('periods', PeriodController::class)
             ->except(['show'])
             ->names('periods');
+
+        Route::post('/periods/{period}/activate', [PeriodController::class, 'activate'])
+            ->name('periods.activate');
+
+        Route::get('/periods/{period}/winner', [PeriodController::class, 'winner'])
+            ->name('periods.winner');
 
 
         // =========================
@@ -135,7 +148,7 @@ Route::middleware(['auth', 'admin'])
         )->name('questions.update');
 
         Route::put('/criteria', [CriterionController::class, 'update'])
-    ->name('criteria.update');
+            ->name('criteria.update');
 
 
         // =========================
@@ -151,6 +164,11 @@ Route::middleware(['auth', 'admin'])
             '/assessment-results/{candidate}',
             [AssessmentResultController::class, 'show']
         )->name('assessment-results.show');
+
+        Route::post(
+            '/assessment-results/{period}/complete',
+            [AssessmentResultController::class, 'complete']
+        )->name('assessment-results.complete');
 
 
         // =========================

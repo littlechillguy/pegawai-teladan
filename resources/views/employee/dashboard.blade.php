@@ -15,6 +15,37 @@
     <div class="py-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
+        {{-- Success Alert --}}
+@if(session('success'))
+    <div
+        class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3"
+        x-data="{ show: true }"
+        x-show="show"
+    >
+        <div class="flex items-center justify-between gap-4">
+
+            <div class="flex items-center gap-3">
+                <span class="text-green-600 text-lg">
+                    ✓
+                </span>
+
+                <p class="text-sm font-medium text-green-700">
+                    {{ session('success') }}
+                </p>
+            </div>
+
+            <button
+                type="button"
+                @click="show = false"
+                class="text-green-500 hover:text-green-700 text-lg"
+            >
+                &times;
+            </button>
+
+        </div>
+    </div>
+@endif
+
             {{-- Informasi Pegawai --}}
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
 

@@ -141,15 +141,10 @@
 
                                             <div class="flex items-center gap-1">
 
-                                                <input
-                                                    type="number"
-                                                    step="0.01"
-                                                    min="0"
-                                                    max="100"
+                                                <input type="number" step="0.01" min="0" max="100"
                                                     name="weights[{{ $criterion->id }}]"
                                                     value="{{ old('weights.' . $criterion->id, $criterion->weight) }}"
-                                                    class="weight-input w-20 rounded-lg border-gray-300 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500"
-                                                >
+                                                    class="weight-input w-20 rounded-lg border-gray-300 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500">
 
                                                 <span class="text-gray-500">%</span>
 
@@ -264,21 +259,101 @@
 
                 const badge = document.getElementById('total-weight-badge');
                 const valueEl = document.getElementById('total-weight-value');
+
                 valueEl.textContent = total;
 
-                badge.classList.remove('bg-green-100', 'text-green-700', 'bg-red-100', 'text-red-700');
+                badge.classList.remove(
+                    'bg-green-100',
+                    'text-green-700',
+                    'bg-red-100',
+                    'text-red-700',
+                    'bg-yellow-100',
+                    'text-yellow-700'
+                );
 
                 if (total === 100) {
-                    badge.classList.add('bg-green-100', 'text-green-700');
+                    badge.classList.add(
+                        'bg-green-100',
+                        'text-green-700'
+                    );
+                } else if (total > 100) {
+                    badge.classList.add(
+                        'bg-red-100',
+                        'text-red-700'
+                    );
                 } else {
-                    badge.classList.add('bg-red-100', 'text-red-700');
+                    badge.classList.add(
+                        'bg-yellow-100',
+                        'text-yellow-700'
+                    );
                 }
             }
 
+
+            // Update total saat bobot diubah
             document.querySelectorAll('.weight-input').forEach(input => {
                 input.addEventListener('input', updateTotalWeight);
             });
 
+
+            // Cek total sebelum form disubmit
+            document.querySelector('form').addEventListener('submit', function (event) {
+
+                const inputs = document.querySelectorAll('.weight-input');
+                let total = 0;
+
+                inputs.forEach(input => {
+                    total += parseFloat(input.value) || 0;
+                });
+
+                total = Math.round(total * 100) / 100;
+
+
+                // Jika lebih dari 100%
+                if (total > 100) {
+                    event.preventDefault();
+
+                    alert(
+                        'Bobot penilaian tidak dapat disimpan.\n\n' +
+                        'Total bobot saat ini: ' + total + '%\n' +
+                        'Total bobot tidak boleh lebih dari 100%.\n\n' +
+                        'Silakan kurangi bobot beberapa kriteria terlebih dahulu.'
+                    );
+
+                    return;
+                }
+
+
+                // Jika kurang dari 100%
+                if (total < 100) {
+                    event.preventDefault();
+
+                    alert(
+                        'Bobot penilaian belum lengkap.\n\n' +
+                        'Total bobot saat ini: ' + total + '%\n' +
+                        'Total bobot harus tepat 100%.\n\n' +
+                        'Silakan tambahkan bobot kriteria terlebih dahulu.'
+                    );
+
+                    return;
+                }
+
+
+                // Jika tepat 100%
+                if (total === 100) {
+                    const confirmed = confirm(
+                        'Total bobot sudah tepat 100%.\n\n' +
+                        'Yakin ingin menyimpan perubahan bobot?'
+                    );
+
+                    if (!confirmed) {
+                        event.preventDefault();
+                    }
+                }
+            });
+
+
+            // Jalankan saat halaman pertama kali dibuka
             document.addEventListener('DOMContentLoaded', updateTotalWeight);
         </script>
     @endpush

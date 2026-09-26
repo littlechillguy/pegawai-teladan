@@ -8,7 +8,6 @@ use App\Models\Candidate;
 use App\Models\Period;
 use App\Models\Question;
 use App\Services\ScoreCalculationService;
-use App\Services\WinnerCalculationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +15,9 @@ use Illuminate\Validation\ValidationException;
 
 class AssessmentController extends Controller
 {
+    /**
+     * Menampilkan halaman penilaian kandidat.
+     */
     public function create(Candidate $candidate)
     {
         $employee = Auth::user()->employee;
@@ -23,16 +25,64 @@ class AssessmentController extends Controller
         $activePeriod = Period::where('status', 'active')->first();
 
         if (!$activePeriod) {
-            abort(404, 'Tidak ada periode penilaian aktif.');
+            return redirect()
+                ->route('dashboard')
+                ->with(
+                    'error',
+                    'Tidak ada periode penilaian yang sedang aktif.'
+                );
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Voting sudah diselesaikan
+        |--------------------------------------------------------------------------
+        */
+
+        if ($activePeriod->voting_completed) {
+            return redirect()
+                ->route('dashboard')
+                ->with(
+                    'error',
+                    'Sesi voting pada periode ini sudah diselesaikan. Penilaian tidak dapat dilakukan lagi.'
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Pastikan kandidat berasal dari periode aktif
+        |--------------------------------------------------------------------------
+        */
 
         if ($candidate->period_id !== $activePeriod->id) {
-            abort(404, 'Kandidat tidak tersedia pada periode aktif.');
+            return redirect()
+                ->route('dashboard')
+                ->with(
+                    'error',
+                    'Kandidat tersebut tidak tersedia pada periode aktif.'
+                );
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Tidak boleh menilai diri sendiri
+        |--------------------------------------------------------------------------
+        */
+
         if ($candidate->employee_id === $employee->id) {
-            abort(403, 'Anda tidak dapat menilai diri sendiri.');
+            return redirect()
+                ->route('dashboard')
+                ->with(
+                    'error',
+                    'Anda tidak dapat menilai diri sendiri.'
+                );
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Cek apakah sudah pernah menilai kandidat
+        |--------------------------------------------------------------------------
+        */
 
         $alreadyAssessed = Assessment::where('period_id', $activePeriod->id)
             ->where('candidate_id', $candidate->id)
@@ -42,8 +92,17 @@ class AssessmentController extends Controller
         if ($alreadyAssessed) {
             return redirect()
                 ->route('dashboard')
-                ->with('error', 'Anda sudah memberikan penilaian untuk kandidat tersebut.');
+                ->with(
+                    'error',
+                    'Anda sudah memberikan penilaian untuk kandidat tersebut.'
+                );
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Ambil pertanyaan aktif
+        |--------------------------------------------------------------------------
+        */
 
         $questions = Question::with([
             'criterion',
@@ -64,27 +123,77 @@ class AssessmentController extends Controller
         ));
     }
 
+    /**
+     * Menyimpan penilaian kandidat.
+     */
     public function store(
         Request $request,
         Candidate $candidate,
-        ScoreCalculationService $scoreCalculationService,
-        WinnerCalculationService $winnerCalculationService
+        ScoreCalculationService $scoreCalculationService
     ) {
         $employee = Auth::user()->employee;
 
         $activePeriod = Period::where('status', 'active')->first();
 
         if (!$activePeriod) {
-            abort(404, 'Tidak ada periode penilaian aktif.');
+            return redirect()
+                ->route('dashboard')
+                ->with(
+                    'error',
+                    'Tidak ada periode penilaian yang sedang aktif.'
+                );
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Jangan izinkan penilaian setelah voting selesai
+        |--------------------------------------------------------------------------
+        */
+
+        if ($activePeriod->voting_completed) {
+            return redirect()
+                ->route('dashboard')
+                ->with(
+                    'error',
+                    'Sesi voting pada periode ini sudah diselesaikan. Penilaian tidak dapat dilakukan lagi.'
+                );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Pastikan kandidat berasal dari periode aktif
+        |--------------------------------------------------------------------------
+        */
 
         if ($candidate->period_id !== $activePeriod->id) {
-            abort(404, 'Kandidat tidak tersedia pada periode aktif.');
+            return redirect()
+                ->route('dashboard')
+                ->with(
+                    'error',
+                    'Kandidat tersebut tidak tersedia pada periode aktif.'
+                );
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Tidak boleh menilai diri sendiri
+        |--------------------------------------------------------------------------
+        */
+
         if ($candidate->employee_id === $employee->id) {
-            abort(403, 'Anda tidak dapat menilai diri sendiri.');
+            return redirect()
+                ->route('dashboard')
+                ->with(
+                    'error',
+                    'Anda tidak dapat menilai diri sendiri.'
+                );
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Cek apakah sudah pernah menilai
+        |--------------------------------------------------------------------------
+        */
 
         $alreadyAssessed = Assessment::where('period_id', $activePeriod->id)
             ->where('candidate_id', $candidate->id)
@@ -94,12 +203,29 @@ class AssessmentController extends Controller
         if ($alreadyAssessed) {
             return redirect()
                 ->route('dashboard')
-                ->with('error', 'Anda sudah memberikan penilaian untuk kandidat tersebut.');
+                ->with(
+                    'error',
+                    'Anda sudah memberikan penilaian untuk kandidat tersebut.'
+                );
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Ambil semua pertanyaan aktif
+        |--------------------------------------------------------------------------
+        */
 
         $questions = Question::with('options')
             ->where('is_active', true)
+            ->orderBy('criterion_id')
+            ->orderBy('order')
             ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validasi jawaban
+        |--------------------------------------------------------------------------
+        */
 
         $request->validate([
             'answers' => ['required', 'array'],
@@ -125,6 +251,12 @@ class AssessmentController extends Controller
                 ]);
             }
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Simpan assessment
+        |--------------------------------------------------------------------------
+        */
 
         DB::transaction(function () use (
             $activePeriod,
@@ -157,8 +289,14 @@ class AssessmentController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Hitung ulang nilai kandidat
+        | Hitung ulang nilai akhir kandidat
         |--------------------------------------------------------------------------
+        |
+        | Nilai akhir menggunakan seluruh kriteria, termasuk:
+        |
+        | Kehadiran × bobot Kehadiran
+        | + seluruh nilai assessment × bobot masing-masing
+        |
         */
 
         $finalScore = $scoreCalculationService->calculate($candidate);
@@ -169,22 +307,13 @@ class AssessmentController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Cek apakah semua kandidat sudah selesai
+        | Jangan menentukan winner di sini
         |--------------------------------------------------------------------------
+        |
+        | Winner hanya ditentukan ketika admin menekan
+        | "Selesaikan Penilaian" pada halaman Hasil Penilaian.
+        |
         */
-
-        $winner = $winnerCalculationService->determineWinner($activePeriod);
-
-        if ($winner) {
-            return redirect()
-                ->route('dashboard')
-                ->with(
-                    'success',
-                    'Penilaian berhasil dikirim. Seluruh penilaian telah selesai dan '
-                    . $winner->employee->name
-                    . ' ditetapkan sebagai Pegawai Teladan.'
-                );
-        }
 
         return redirect()
             ->route('dashboard')

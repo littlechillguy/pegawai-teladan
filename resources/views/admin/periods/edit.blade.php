@@ -21,19 +21,27 @@
                     <h3 class="font-semibold text-gray-800">
                         Informasi Periode
                     </h3>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        Ubah nama atau batas waktu periode.
+                    </p>
                 </div>
 
-                <form action="{{ route('admin.periods.update', $period) }}"
-                      method="POST"
-                      class="p-6 space-y-6">
+                <form
+                    action="{{ route('admin.periods.update', $period) }}"
+                    method="POST"
+                    class="p-6 space-y-6"
+                >
 
                     @csrf
                     @method('PUT')
 
                     {{-- Nama Periode --}}
                     <div>
-                        <label for="name"
-                               class="block text-sm font-medium text-gray-700 mb-2">
+                        <label
+                            for="name"
+                            class="block text-sm font-medium text-gray-700 mb-2"
+                        >
                             Nama Periode
                         </label>
 
@@ -56,9 +64,12 @@
                     {{-- Tanggal --}}
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
+                        {{-- Tanggal Mulai --}}
                         <div>
-                            <label for="start_date"
-                                   class="block text-sm font-medium text-gray-700 mb-2">
+                            <label
+                                for="start_date"
+                                class="block text-sm font-medium text-gray-700 mb-2"
+                            >
                                 Tanggal Mulai
                             </label>
 
@@ -76,11 +87,18 @@
                                     {{ $message }}
                                 </p>
                             @enderror
+
+                            <p class="mt-2 text-xs text-gray-500">
+                                Tanggal mulai dibukanya pemilihan.
+                            </p>
                         </div>
 
+                        {{-- Tanggal Selesai --}}
                         <div>
-                            <label for="end_date"
-                                   class="block text-sm font-medium text-gray-700 mb-2">
+                            <label
+                                for="end_date"
+                                class="block text-sm font-medium text-gray-700 mb-2"
+                            >
                                 Tanggal Selesai
                             </label>
 
@@ -98,63 +116,66 @@
                                     {{ $message }}
                                 </p>
                             @enderror
+
+                            <p class="mt-2 text-xs text-gray-500">
+                                Batas terakhir proses penilaian.
+                            </p>
                         </div>
 
                     </div>
 
-                    {{-- Status --}}
-                    <div>
-                        <label for="status"
-                               class="block text-sm font-medium text-gray-700 mb-2">
-                            Status Periode
-                        </label>
+                    {{-- Informasi Status --}}
+                    <div class="rounded-lg bg-gray-50 border border-gray-200 px-4 py-3">
 
-                        <select
-                            name="status"
-                            id="status"
-                            class="w-full rounded-lg border-gray-300 focus:border-gray-500 focus:ring-gray-500"
-                            required
-                        >
+                        <div class="flex items-start gap-3">
 
-                            <option value="upcoming"
-                                {{ old('status', $period->status) === 'upcoming' ? 'selected' : '' }}>
-                                Akan Datang
-                            </option>
+                            <div class="text-gray-500 mt-0.5">
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M12 21a9 9 0 100-18 9 9 0 000 18z"
+                                    />
+                                </svg>
+                            </div>
 
-                            <option value="active"
-                                {{ old('status', $period->status) === 'active' ? 'selected' : '' }}>
-                                Aktif
-                            </option>
+                            <div>
+                                <p class="text-sm font-medium text-gray-700">
+                                    Status periode tidak diubah melalui form ini
+                                </p>
 
-                            <option value="completed"
-                                {{ old('status', $period->status) === 'completed' ? 'selected' : '' }}>
-                                Selesai
-                            </option>
+                                <p class="text-xs text-gray-500 mt-1">
+                                    Status periode dikelola melalui tombol
+                                    <strong>Aktifkan</strong> dan
+                                    <strong>Selesaikan</strong>
+                                    pada halaman Manajemen Periode.
+                                </p>
+                            </div>
 
-                        </select>
+                        </div>
 
-                        @error('status')
-                            <p class="mt-1 text-sm text-red-600">
-                                {{ $message }}
-                            </p>
-                        @enderror
-
-                        <p class="mt-2 text-xs text-gray-500">
-                            Periode aktif adalah periode yang sedang digunakan untuk proses penilaian.
-                        </p>
                     </div>
 
                     {{-- Tombol --}}
                     <div class="flex items-center justify-end gap-3 pt-4 border-t border-gray-100">
 
-                        <a href="{{ route('admin.periods.index') }}"
-                           class="px-4 py-2 rounded-lg border border-gray-300 text-sm font-semibold text-gray-700 hover:bg-gray-50">
+                        <a
+                            href="{{ route('admin.periods.index') }}"
+                            class="px-4 py-2 rounded-lg border border-gray-300 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                        >
                             Batal
                         </a>
 
                         <button
                             type="submit"
-                            class="px-5 py-2 rounded-lg bg-gray-800 text-white text-sm font-semibold hover:bg-gray-700">
+                            class="px-5 py-2 rounded-lg bg-gray-800 text-white text-sm font-semibold hover:bg-gray-700"
+                        >
                             Simpan Perubahan
                         </button>
 
