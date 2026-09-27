@@ -28,7 +28,7 @@
 
                     <div>
 
-                        <p class="text-sm font-medium text-yellow-600">
+                        <p class="text-sm font-medium text-teal-600">
                             Penghargaan Pegawai
                         </p>
 
@@ -44,7 +44,7 @@
                     </div>
 
 
-                    <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-yellow-50">
+                    <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-teal-50">
 
                         <span class="text-3xl">
                             🏆
@@ -79,7 +79,7 @@
                         </div>
 
 
-                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-50">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-50">
 
                             <span class="text-xl">
                                 🏆
@@ -109,11 +109,11 @@
                         </div>
 
 
-                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50">
+                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100">
 
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                class="h-6 w-6 text-indigo-600"
+                                class="h-6 w-6 text-slate-700"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
@@ -180,12 +180,12 @@
                                             <img
                                                 src="{{ asset('storage/' . $winner->employee->photo) }}"
                                                 alt="{{ $winner->employee->name }}"
-                                                class="h-20 w-20 rounded-2xl object-cover ring-2 ring-yellow-100"
+                                                class="h-20 w-20 rounded-2xl object-cover ring-2 ring-teal-100"
                                             >
 
                                         @else
 
-                                            <div class="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-2xl bg-yellow-100 text-2xl font-bold text-yellow-700">
+                                            <div class="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-2xl bg-teal-50 text-2xl font-bold text-teal-700 border border-teal-200">
 
                                                 {{ strtoupper(substr($winner->employee->name, 0, 1)) }}
 
@@ -205,7 +205,7 @@
                                                 </h3>
 
 
-                                                <span class="rounded-full bg-yellow-100 px-3 py-1 text-xs font-bold text-yellow-700">
+                                                <span class="rounded-full bg-teal-50 px-3 py-1 text-xs font-bold text-teal-700 border border-teal-200">
 
                                                     🏆 Pegawai Teladan
 
@@ -224,14 +224,14 @@
 
                                             <div class="mt-2 flex flex-wrap gap-2">
 
-                                                <span class="rounded-lg bg-gray-100 px-3 py-1 text-xs font-medium text-gray-700">
+                                                <span class="rounded-lg bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
 
-                                                    {{ $winner->employee->department }}
+                                                    {{ $winner->employee->pokja }}
 
                                                 </span>
 
 
-                                                <span class="rounded-lg bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">
+                                                <span class="rounded-lg bg-teal-50 px-3 py-1 text-xs font-medium text-teal-700 border border-teal-200">
 
                                                     {{ $winner->employee->position }}
 
@@ -286,7 +286,7 @@
                                                 Nilai Akhir
                                             </p>
 
-                                            <p class="mt-1 text-2xl font-bold text-indigo-600">
+                                            <p class="mt-1 text-2xl font-bold text-teal-700">
 
                                                 {{ number_format($winner->final_score, 2) }}
 
@@ -305,13 +305,13 @@
                                 <div class="mt-5 flex flex-wrap gap-3">
 
 
-                                    <div class="rounded-xl bg-gray-50 px-4 py-3">
+                                    <div class="rounded-xl bg-slate-50 px-4 py-3 border border-slate-200">
 
-                                        <p class="text-xs text-gray-500">
+                                        <p class="text-xs text-slate-500">
                                             Persentase Kehadiran
                                         </p>
 
-                                        <p class="mt-1 text-sm font-bold text-gray-800">
+                                        <p class="mt-1 text-sm font-bold text-slate-800">
 
                                             {{ number_format($winner->attendance_percentage, 2) }}%
 
@@ -320,13 +320,13 @@
                                     </div>
 
 
-                                    <div class="rounded-xl bg-yellow-50 px-4 py-3">
+                                    <div class="rounded-xl bg-teal-50 px-4 py-3 border border-teal-200">
 
-                                        <p class="text-xs text-yellow-600">
+                                        <p class="text-xs text-teal-600">
                                             Status Penghargaan
                                         </p>
 
-                                        <p class="mt-1 text-sm font-bold text-yellow-700">
+                                        <p class="mt-1 text-sm font-bold text-teal-700">
 
                                             🏆 Pegawai Teladan
 
@@ -353,7 +353,7 @@
 
                     <div class="px-6 py-14 text-center">
 
-                        <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
+                        <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-slate-100">
 
                             <span class="text-3xl">
                                 🏆
@@ -377,7 +377,7 @@
 
                             <a
                                 href="{{ route('admin.candidates.index') }}"
-                                class="inline-flex items-center rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-indigo-700"
+                                class="inline-flex items-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
                             >
                                 Kelola Kandidat
                             </a>

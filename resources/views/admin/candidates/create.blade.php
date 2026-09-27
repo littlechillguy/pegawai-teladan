@@ -100,7 +100,7 @@
                                 >
                                     {{ $employee->name }}
                                     — {{ $employee->nip }}
-                                    — {{ $employee->department }}
+                                    — {{ $employee->pokja }}
                                 </option>
 
                             @endforeach

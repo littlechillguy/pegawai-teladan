@@ -57,13 +57,80 @@ class DashboardController extends Controller
                 ->toArray()
             : [];
 
+        /*
+        |--------------------------------------------------------------------------
+        | Data Chart: Perbandingan Nilai Akhir Kandidat (Periode Aktif)
+        |--------------------------------------------------------------------------
+        */
+
+        $candidateScores = $activePeriod
+            ? Candidate::with('employee')
+                ->where('period_id', $activePeriod->id)
+                ->orderByDesc('final_score')
+                ->get()
+                ->map(function ($candidate) {
+                    return [
+                        'name' => $candidate->employee->name,
+                        'score' => $candidate->final_score ?? 0,
+                    ];
+                })
+            : collect();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Data Chart: Distribusi Pegawai per Pokja
+        |--------------------------------------------------------------------------
+        */
+
+        $pokjaDistribution = Employee::where('status', 'active')
+            ->selectRaw('pokja, count(*) as total')
+            ->groupBy('pokja')
+            ->orderByDesc('total')
+            ->get();
+
+        /*
+        |--------------------------------------------------------------------------
+        | Data Progress Penilaian per Kandidat (Periode Aktif)
+        |--------------------------------------------------------------------------
+        */
+
+        $totalEvaluators = max($totalEmployees - 1, 1);
+
+        $candidateProgress = $activePeriod
+            ? Candidate::with('employee')
+                ->where('period_id', $activePeriod->id)
+                ->get()
+                ->map(function ($candidate) use ($totalEvaluators) {
+                    $submitted = Assessment::where('candidate_id', $candidate->id)
+                        ->whereNotNull('submitted_at')
+                        ->count();
+
+                    $percentage = min(
+                        round(($submitted / $totalEvaluators) * 100),
+                        100
+                    );
+
+                    return [
+                        'name' => $candidate->employee->name,
+                        'submitted' => $submitted,
+                        'total' => $totalEvaluators,
+                        'percentage' => $percentage,
+                    ];
+                })
+                ->sortByDesc('percentage')
+                ->values()
+            : collect();
+
         return view('admin.dashboard', compact(
             'activePeriod',
             'totalEmployees',
             'totalCandidates',
             'totalAssessments',
             'candidates',
-            'assessedCandidateIds'
+            'assessedCandidateIds',
+            'candidateScores',
+            'pokjaDistribution',
+            'candidateProgress'
         ));
     }
 }

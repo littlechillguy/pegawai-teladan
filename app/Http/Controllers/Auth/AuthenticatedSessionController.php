@@ -15,23 +15,28 @@ class AuthenticatedSessionController extends Controller
         return view('auth.login');
     }
 
-    public function store(Request $request)
-    {
-        $credentials = $request->validate([
-            'nip' => ['required', 'string'],
-            'password' => ['required', 'string'],
-        ]);
+   public function store(Request $request)
+{
+    $credentials = $request->validate([
+        'nip' => ['required', 'string'],
+        'password' => ['required', 'string'],
+    ]);
 
-        $user = User::whereHas('employee', function ($query) use ($credentials) {
-            $query->where('nip', $credentials['nip'])
-                  ->where('status', 'active');
-        })->first();
+    $normalizedNip = strtoupper(trim($credentials['nip']));
 
-        if (!$user || !Hash::check($credentials['password'], $user->password)) {
-            return back()->withErrors([
-                'nip' => 'NIP atau password salah.',
-            ])->onlyInput('nip');
-        }
+    $user = User::whereHas('employee', function ($query) use ($normalizedNip) {
+    $query->whereRaw('UPPER(nip) = ?', [$normalizedNip])
+          ->where('status', 'active');
+})->first();
+
+
+    if (!$user || !Hash::check($credentials['password'], $user->password)) {
+        return back()->withErrors([
+            'nip' => 'NIP atau password salah.',
+        ])->onlyInput('nip');
+    }
+
+    // ... sisanya tetap sama
 
         Auth::login($user);
 
