@@ -1,12 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="lg:ml-72">
+        <div class="flex items-center justify-between gap-4">
             <h2 class="text-xl font-bold text-slate-800">Edit Kandidat</h2>
             <p class="text-sm text-slate-500 mt-1">Perbarui persentase kehadiran kandidat.</p>
         </div>
     </x-slot>
 
-    <div class="lg:ml-72 py-8 bg-slate-50/50 min-h-[calc(100vh-4rem)]">
+    <div class="py-8 bg-slate-50/50 min-h-[calc(100vh-4rem)]">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
             @if ($errors->any())

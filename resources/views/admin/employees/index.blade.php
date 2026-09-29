@@ -16,7 +16,7 @@
     {{-- ========================================================= --}}
     {{-- MAIN CONTENT --}}
     {{-- ========================================================= --}}
-    <div class="lg:ml-72 py-8 bg-slate-50/50 min-h-[calc(100vh-4rem)]">
+    <div class=" py-8 bg-slate-50/50 min-h-[calc(100vh-4rem)]">
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

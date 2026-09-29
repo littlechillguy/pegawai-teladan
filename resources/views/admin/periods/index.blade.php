@@ -1,7 +1,7 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <div class="lg:ml-72 flex items-center justify-between gap-4">
+        <div class=" flex items-center justify-between gap-4">
 
             <div>
                 <h2 class="font-bold text-2xl text-slate-800 leading-tight tracking-tight">
@@ -48,7 +48,7 @@
     </x-slot>
 
 
-    <div class="lg:ml-72 py-8 bg-slate-50/50 min-h-[calc(100vh-4rem)]">
+    <div class="py-8 bg-slate-50/50 min-h-[calc(100vh-4rem)]">
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 

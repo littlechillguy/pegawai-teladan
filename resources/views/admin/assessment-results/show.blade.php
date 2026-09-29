@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="lg:ml-72">
+        <div class="flex items-center justify-between gap-4">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center shadow-sm">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -15,7 +15,7 @@
         </div>
     </x-slot>
 
-    <div class="lg:ml-72 min-h-[calc(100vh-4rem)] bg-slate-50 py-7">
+    <div class="min-h-[calc(100vh-4rem)] bg-slate-50 py-7">
         <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
 
             {{-- Back --}}

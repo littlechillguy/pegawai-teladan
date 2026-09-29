@@ -8,9 +8,9 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>
-        {{ config('app.name', 'Ruang Keteladanan') }}
-    </title>
+    <title>Ruang Keteladanan</title>
+
+    <link rel="icon" type="image/png" href="{{ asset('storage/logo-ham.png') }}">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -22,49 +22,56 @@
         {{-- Navigation --}}
         @include('layouts.navigation')
 
-        {{-- Header --}}
-        @isset($header)
-            <header class="bg-white border-b border-gray-200">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
+        {{-- Main Area --}}
+        <div class="lg:ml-64">
+
+            {{-- Header --}}
+            @isset($header)
+                <header class="bg-white border-b border-gray-200">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endisset
+
+            {{-- Main Content --}}
+            <main>
+                {{ $slot }}
+            </main>
+
+            {{-- Footer --}}
+            <footer class="border-t border-gray-200 bg-white mt-10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+                    <div class="text-center">
+
+                        <p class="text-sm font-medium text-gray-700">
+                            Ruang Keteladanan
+                        </p>
+
+                        <p class="text-xs text-gray-500 mt-1">
+                            Sistem Penilaian dan Penghargaan Pegawai
+                        </p>
+
+                        <p class="text-xs text-gray-400 mt-3">
+                            © {{ date('Y') }} Kementerian Hak Asasi Manusia Republik Indonesia
+                        </p>
+
+                        <p class="text-xs text-gray-400 mt-1">
+                            Developed by Raisya Mahija G. &amp; Dzakwan Rafly H. — SMKN 43 Jakarta
+                        </p>
+
+                    </div>
+
                 </div>
-            </header>
-        @endisset
+            </footer>
 
-        {{-- Main Content --}}
-        <main>
-            {{ $slot }}
-        </main>
-
-        {{-- Footer --}}
-        <footer class="border-t border-gray-200 bg-white mt-10">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-
-                <div class="text-center">
-
-                    <p class="text-sm font-medium text-gray-700">
-                        Ruang Keteladanan
-                    </p>
-
-                    <p class="text-xs text-gray-500 mt-1">
-                        Sistem Penilaian dan Penghargaan Pegawai
-                    </p>
-
-                    <p class="text-xs text-gray-400 mt-3">
-                        © {{ date('Y') }} Kementerian Hak Asasi Manusia Republik Indonesia
-                    </p>
-
-                    <p class="text-xs text-gray-400 mt-1">
-                        Developed by Raisya Mahija G. &amp; Dzakwan Rafly H. — SMKN 43 Jakarta
-                    </p>
-
-                </div>
-
-            </div>
-        </footer>
+        </div>
 
     </div>
-  @stack('scripts')
+
+    @stack('scripts')
+
 </body>
 
 </html>

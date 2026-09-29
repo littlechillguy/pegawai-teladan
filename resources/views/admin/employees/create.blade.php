@@ -1,7 +1,7 @@
 <x-app-layout>
 
     <x-slot name="header">
-        <div class="lg:ml-72">
+        <div class="flex items-center justify-between gap-4">
             <h2 class="font-bold text-2xl text-slate-800 leading-tight tracking-tight">
                 Tambah Pegawai
             </h2>
@@ -11,7 +11,7 @@
         </div>
     </x-slot>
 
-    <div class="lg:ml-72 py-8 bg-slate-50/50 min-h-[calc(100vh-4rem)]">
+    <div class="py-8 bg-slate-50/50 min-h-[calc(100vh-4rem)]">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 sm:p-8">
