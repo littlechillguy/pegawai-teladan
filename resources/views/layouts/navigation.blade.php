@@ -1,358 +1,318 @@
-<nav x-data="{ open: false }" class="bg-white/90 backdrop-blur-md border-b border-emerald-100/80 sticky top-0 z-30">
+<nav x-data="{ open: false }" class="relative">
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {{-- MOBILE HEADER --}}
+    <div class="lg:hidden fixed top-0 inset-x-0 z-50 h-16 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="h-full px-4 flex items-center justify-between">
 
-        <div class="flex justify-between h-16">
-
-            {{-- =========================
-                LOGO / BRAND
-            ========================== --}}
-            <div class="flex">
-
-                <div class="shrink-0 flex items-center">
-
-                    <a
-                        href="{{ auth()->user()->role === 'admin'
-                            ? route('admin.dashboard')
-                            : route('dashboard') }}"
-                        class="flex flex-col leading-tight group"
-                    >
-                        <span class="text-lg font-extrabold text-slate-800 group-hover:text-emerald-700 transition">
-                            Ruang Keteladanan
-                        </span>
-
-                        <span class="text-[10px] font-semibold text-emerald-600 tracking-wider">
-                            PPSDM
-                        </span>
-                    </a>
-
-                </div>
-
-                {{-- =========================
-                    DESKTOP NAVIGATION
-                ========================== --}}
-                <div class="hidden sm:flex sm:items-center sm:ms-8">
-
-                    @if(auth()->user()->role === 'admin')
-
-                        <div class="flex items-center gap-1">
-
-                            {{-- Dashboard --}}
-                            <x-nav-link
-                                :href="route('admin.dashboard')"
-                                :active="request()->routeIs('admin.dashboard')"
-                            >
-                                Dashboard
-                            </x-nav-link>
-
-                            {{-- Pegawai --}}
-                            <x-nav-link
-                                :href="route('admin.employees.index')"
-                                :active="request()->routeIs('admin.employees.*')"
-                            >
-                                Pegawai
-                            </x-nav-link>
-
-                            {{-- Periode --}}
-                            <x-nav-link
-                                :href="route('admin.periods.index')"
-                                :active="request()->routeIs('admin.periods.*')"
-                            >
-                                Periode
-                            </x-nav-link>
-
-                            {{-- Kandidat --}}
-                            <x-nav-link
-                                :href="route('admin.candidates.index')"
-                                :active="request()->routeIs('admin.candidates.*')"
-                            >
-                                Kandidat
-                            </x-nav-link>
-
-                            {{-- Hasil Penilaian --}}
-                            <x-nav-link
-                                :href="route('admin.assessment-results.index')"
-                                :active="request()->routeIs('admin.assessment-results.*')"
-                            >
-                                Hasil Penilaian
-                            </x-nav-link>
-
-                            {{-- Kriteria --}}
-                            <x-nav-link
-                                :href="route('admin.criteria.index')"
-                                :active="request()->routeIs('admin.criteria.*')"
-                            >
-                                Kriteria
-                            </x-nav-link>
-
-                            {{-- Hall of Fame --}}
-                            <x-nav-link
-                                :href="route('admin.hall-of-fame.index')"
-                                :active="request()->routeIs('admin.hall-of-fame.*')"
-                            >
-                                Hall of Fame
-                            </x-nav-link>
-
-                        </div>
-
-                    @else
-
-                        {{-- Employee --}}
-                        <x-nav-link
-                            :href="route('dashboard')"
-                            :active="request()->routeIs('dashboard')"
-                        >
-                            Dashboard
-                        </x-nav-link>
-
-                    @endif
-
-                </div>
-
-            </div>
-
-
-            {{-- =========================
-                DESKTOP USER DROPDOWN
-            ========================== --}}
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-
-                <x-dropdown align="right" width="48">
-
-                    {{-- Trigger --}}
-                    <x-slot name="trigger">
-
-                        <button
-                            type="button"
-                            class="inline-flex items-center px-3 py-1.5 border border-slate-200/80 text-sm leading-4 font-medium rounded-xl text-slate-700 bg-slate-50/50 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-800 focus:outline-none transition-all duration-200"
-                        >
-
-                            <div class="text-right">
-
-                                <div class="font-bold text-xs text-slate-800">
-                                    {{ Auth::user()->employee->name }}
-                                </div>
-
-                                <div class="text-[10px] text-slate-400 font-mono">
-                                    {{ Auth::user()->employee->nip }}
-                                </div>
-
-                            </div>
-
-                            <div class="ms-2">
-
-                                <svg
-                                    class="fill-current h-4 w-4 text-slate-400"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"
-                                >
-                                    <path
-                                        fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd"
-                                    />
-                                </svg>
-
-                            </div>
-
-                        </button>
-
-                    </x-slot>
-
-
-                    {{-- Dropdown Content --}}
-                    <x-slot name="content">
-
-                        {{-- User Information --}}
-                        <div class="px-4 py-3 border-b border-gray-100 bg-slate-50/50">
-
-                            <p class="text-sm font-bold text-slate-800">
-                                {{ Auth::user()->employee->name }}
-                            </p>
-
-                            <p class="text-xs text-emerald-700 font-semibold mt-0.5">
-                                {{ Auth::user()->role === 'admin' ? 'Administrator' : 'Pegawai' }}
-                            </p>
-
-                            <p class="text-xs text-slate-400 font-mono mt-0.5">
-                                NIP: {{ Auth::user()->employee->nip }}
-                            </p>
-
-                        </div>
-
-
-                        {{-- Ubah Password --}}
-                        <x-dropdown-link
-                            :href="route('password.edit')"
-                        >
-                            Ubah Password
-                        </x-dropdown-link>
-
-
-                        {{-- Logout --}}
-                        <form
-                            method="POST"
-                            action="{{ route('logout') }}"
-                        >
-                            @csrf
-
-                            <x-dropdown-link
-                                :href="route('logout')"
-                                onclick="event.preventDefault(); this.closest('form').submit();"
-                                class="text-red-600 hover:bg-red-50"
-                            >
-                                Keluar
-                            </x-dropdown-link>
-
-                        </form>
-
-                    </x-slot>
-
-                </x-dropdown>
-
-            </div>
-
-
-            {{-- =========================
-                MOBILE HAMBURGER
-            ========================== --}}
-            <div class="-me-2 flex items-center sm:hidden">
-
-                <button
-                    @click="open = ! open"
-                    type="button"
-                    class="inline-flex items-center justify-center p-2 rounded-lg text-slate-500 hover:text-emerald-700 hover:bg-emerald-50 focus:outline-none transition"
-                >
-
-                    <svg
-                        class="h-6 w-6"
-                        stroke="currentColor"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                    >
-
-                        {{-- Hamburger --}}
-                        <path
-                            :class="{
-                                'hidden': open,
-                                'inline-flex': !open
-                            }"
-                            class="inline-flex"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16"
-                        />
-
-                        {{-- Close --}}
-                        <path
-                            :class="{
-                                'hidden': !open,
-                                'inline-flex': open
-                            }"
-                            class="hidden"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12"
-                        />
-
+            <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}" class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-lg bg-emerald-600 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/>
                     </svg>
+                </div>
 
-                </button>
+                <div class="leading-tight">
+                    <p class="text-sm font-extrabold text-slate-800">
+                        Ruang Keteladanan
+                    </p>
+                    <p class="text-[9px] font-bold tracking-widest text-emerald-600">
+                        PPSDM
+                    </p>
+                </div>
+            </a>
 
-            </div>
+            <button
+                type="button"
+                @click="open = !open"
+                class="w-10 h-10 rounded-xl flex items-center justify-center text-slate-500 hover:bg-emerald-50 hover:text-emerald-700 transition"
+            >
+                <svg x-show="!open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+
+                <svg x-show="open" x-cloak class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
 
         </div>
-
     </div>
 
 
-    {{-- =========================
-        MOBILE NAVIGATION
-    ========================== --}}
-    <div
-        :class="{
-            'block': open,
-            'hidden': !open
-        }"
-        class="hidden sm:hidden bg-white border-b border-slate-200"
+    {{-- SIDEBAR --}}
+    <aside
+        class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 shadow-sm transform transition-transform duration-300 ease-in-out lg:translate-x-0"
+        :class="open ? 'translate-x-0' : '-translate-x-full'"
     >
 
-        {{-- Navigation Menu --}}
-        <div class="pt-2 pb-3 space-y-1">
+        <div class="flex flex-col h-full">
 
-            @if(auth()->user()->role === 'admin')
+            {{-- BRAND --}}
+            <div class="h-20 px-5 flex items-center border-b border-slate-100">
+                <a
+                    href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}"
+                    class="flex items-center gap-3 group"
+                >
+                    <div class="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center shadow-sm group-hover:bg-emerald-700 transition">
+                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l7 4v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V7l7-4z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4"/>
+                        </svg>
+                    </div>
 
-                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                    Dashboard
-                </x-responsive-nav-link>
-
-                <x-responsive-nav-link :href="route('admin.employees.index')" :active="request()->routeIs('admin.employees.*')">
-                    Pegawai
-                </x-responsive-nav-link>
-
-                <x-responsive-nav-link :href="route('admin.periods.index')" :active="request()->routeIs('admin.periods.*')">
-                    Periode
-                </x-responsive-nav-link>
-
-                <x-responsive-nav-link :href="route('admin.candidates.index')" :active="request()->routeIs('admin.candidates.*')">
-                    Kandidat
-                </x-responsive-nav-link>
-
-                <x-responsive-nav-link :href="route('admin.assessment-results.index')" :active="request()->routeIs('admin.assessment-results.*')">
-                    Hasil Penilaian
-                </x-responsive-nav-link>
-
-                <x-responsive-nav-link :href="route('admin.criteria.index')" :active="request()->routeIs('admin.criteria.*')">
-                    Kriteria
-                </x-responsive-nav-link>
-
-                <x-responsive-nav-link :href="route('admin.hall-of-fame.index')" :active="request()->routeIs('admin.hall-of-fame.*')">
-                    Hall of Fame
-                </x-responsive-nav-link>
-
-            @else
-
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    Dashboard
-                </x-responsive-nav-link>
-
-            @endif
-
-        </div>
-
-
-        {{-- MOBILE USER --}}
-        <div class="pt-4 pb-1 border-t border-slate-200 bg-slate-50/50">
-
-            <div class="px-4">
-                <div class="font-bold text-base text-slate-800">
-                    {{ Auth::user()->employee->name }}
-                </div>
-                <div class="font-mono text-xs text-slate-500">
-                    {{ Auth::user()->employee->nip }}
-                </div>
-                <div class="text-xs font-semibold text-emerald-700 mt-0.5">
-                    {{ Auth::user()->role === 'admin' ? 'Administrator' : 'Pegawai' }}
-                </div>
+                    <div class="leading-tight">
+                        <p class="text-sm font-extrabold text-slate-800 group-hover:text-emerald-700 transition">
+                            Ruang Keteladanan
+                        </p>
+                        <p class="mt-1 text-[10px] font-bold tracking-widest text-emerald-600">
+                            PPSDM
+                        </p>
+                    </div>
+                </a>
             </div>
 
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('password.edit')" :active="request()->routeIs('password.edit')">
+
+            {{-- MENU --}}
+            <div class="flex-1 overflow-y-auto px-3 py-5">
+
+                @if(auth()->user()->role === 'admin')
+
+                    {{-- UTAMA --}}
+                    <div class="mb-6">
+                        <p class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            Utama
+                        </p>
+
+                        <a
+                            href="{{ route('admin.dashboard') }}"
+                            @click="open = false"
+                            class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.dashboard') ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}"
+                        >
+                            <span class="w-9 h-9 shrink-0 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.dashboard') ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500' }}">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 10v10h14V10"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 20v-6h6v6"/>
+                                </svg>
+                            </span>
+                            Dashboard
+                        </a>
+                    </div>
+
+
+                    {{-- DATA --}}
+                    <div class="mb-6">
+                        <p class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            Data
+                        </p>
+
+                        <a
+                            href="{{ route('admin.employees.index') }}"
+                            @click="open = false"
+                            class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.employees.*') ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}"
+                        >
+                            <span class="w-9 h-9 shrink-0 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.employees.*') ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500' }}">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87M9 11a4 4 0 100-8 4 4 0 000 8zm6-4a3 3 0 100-6 3 3 0 000 6z"/>
+                                </svg>
+                            </span>
+                            Pegawai
+                        </a>
+
+                        <a
+                            href="{{ route('admin.periods.index') }}"
+                            @click="open = false"
+                            class="mt-1 flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.periods.*') ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}"
+                        >
+                            <span class="w-9 h-9 shrink-0 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.periods.*') ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500' }}">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 2v4m8-4v4M3 10h18"/>
+                                    <rect x="3" y="4" width="18" height="17" rx="2"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 14h2m2 0h2m2 0h2M8 18h2m2 0h2"/>
+                                </svg>
+                            </span>
+                            Periode
+                        </a>
+
+                        <a
+                            href="{{ route('admin.candidates.index') }}"
+                            @click="open = false"
+                            class="mt-1 flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.candidates.*') ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}"
+                        >
+                            <span class="w-9 h-9 shrink-0 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.candidates.*') ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500' }}">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.1 4.26 4.7.68-3.4 3.31.8 4.68L12 13.7l-4.2 2.23.8-4.68-3.4-3.31 4.7-.68L12 3z"/>
+                                </svg>
+                            </span>
+                            Kandidat
+                        </a>
+                    </div>
+
+
+                    {{-- PENILAIAN --}}
+                    <div class="mb-6">
+                        <p class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            Penilaian
+                        </p>
+
+                        <a
+                            href="{{ route('admin.assessment-results.index') }}"
+                            @click="open = false"
+                            class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.assessment-results.*') ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}"
+                        >
+                            <span class="w-9 h-9 shrink-0 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.assessment-results.*') ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500' }}">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 19V5m0 14h16"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 16v-4m4 4V8m4 8v-7m4 7V5"/>
+                                </svg>
+                            </span>
+                            Hasil Penilaian
+                        </a>
+
+                        <a
+                            href="{{ route('admin.criteria.index') }}"
+                            @click="open = false"
+                            class="mt-1 flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition {{ request()->routeIs('admin.criteria.*') ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}"
+                        >
+                            <span class="w-9 h-9 shrink-0 rounded-lg flex items-center justify-center {{ request()->routeIs('admin.criteria.*') ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500' }}">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5h6M9 9h6M9 13h4"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/>
+                                </svg>
+                            </span>
+                            Kriteria
+                        </a>
+                    </div>
+
+
+                    {{-- REKAM JEJAK --}}
+                    <div>
+                        <p class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            Rekam Jejak
+                        </p>
+
+                        <a
+                            href="{{ route('hall-of-fame.index') }}"
+                            @click="open = false"
+                            class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition {{ request()->routeIs('hall-of-fame.*') ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}"
+                        >
+                            <span class="w-9 h-9 shrink-0 rounded-lg flex items-center justify-center {{ request()->routeIs('hall-of-fame.*') ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500' }}">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.1 4.26 4.7.68-3.4 3.31.8 4.68L12 13.7l-4.2 2.23.8-4.68-3.4-3.31 4.7-.68L12 3z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 19h8M9 22h6"/>
+                                </svg>
+                            </span>
+                            Hall of Fame
+                        </a>
+                    </div>
+
+
+                @else
+
+                    {{-- EMPLOYEE --}}
+                    <div>
+                        <p class="px-3 mb-2 text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            Menu
+                        </p>
+
+                        <a
+                            href="{{ route('dashboard') }}"
+                            @click="open = false"
+                            class="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition {{ request()->routeIs('dashboard') ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}"
+                        >
+                            <span class="w-9 h-9 shrink-0 rounded-lg flex items-center justify-center {{ request()->routeIs('dashboard') ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500' }}">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 10v10h14V10"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 20v-6h6v6"/>
+                                </svg>
+                            </span>
+                            Dashboard
+                        </a>
+
+                        <a
+                            href="{{ route('hall-of-fame.index') }}"
+                            @click="open = false"
+                            class="mt-1 flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition {{ request()->routeIs('hall-of-fame.*') ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800' }}"
+                        >
+                            <span class="w-9 h-9 shrink-0 rounded-lg flex items-center justify-center {{ request()->routeIs('hall-of-fame.*') ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500' }}">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.1 4.26 4.7.68-3.4 3.31.8 4.68L12 13.7l-4.2 2.23.8-4.68-3.4-3.31 4.7-.68L12 3z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 19h8M9 22h6"/>
+                                </svg>
+                            </span>
+                            Hall of Fame
+                        </a>
+                    </div>
+
+                @endif
+
+            </div>
+
+
+            {{-- USER AREA --}}
+            <div class="border-t border-slate-100 p-3">
+
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
+                    <div class="w-10 h-10 shrink-0 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">
+                        {{ strtoupper(substr(Auth::user()->employee->name, 0, 1)) }}
+                    </div>
+
+                    <div class="min-w-0 flex-1">
+                        <p class="text-sm font-bold text-slate-800 truncate">
+                            {{ Auth::user()->employee->name }}
+                        </p>
+
+                        <p class="text-[10px] text-slate-400 font-mono truncate">
+                            {{ Auth::user()->employee->nip }}
+                        </p>
+                    </div>
+                </div>
+
+                <a
+                    href="{{ route('password.edit') }}"
+                    @click="open = false"
+                    class="mt-1 flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-slate-500 hover:bg-emerald-50 hover:text-emerald-700 transition"
+                >
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                        <rect x="4" y="10" width="16" height="11" rx="2"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 10V7a4 4 0 018 0v3"/>
+                    </svg>
                     Ubah Password
-                </x-responsive-nav-link>
+                </a>
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+
+                    <button
+                        type="submit"
+                        class="w-full mt-1 flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-slate-500 hover:bg-red-50 hover:text-red-600 transition"
+                    >
+                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H3m0 0l4-4m-4 4l4 4"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5V4a2 2 0 012-2h7a2 2 0 012 2v16a2 2 0 01-2 2h-7a2 2 0 01-2-2v-1"/>
+                        </svg>
                         Keluar
-                    </x-responsive-nav-link>
+                    </button>
                 </form>
+
             </div>
 
         </div>
+    </aside>
 
-    </div>
+
+    {{-- MOBILE OVERLAY --}}
+    <div
+        x-show="open"
+        x-cloak
+        @click="open = false"
+        class="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm lg:hidden"
+    ></div>
+
+
+    {{-- DESKTOP SIDEBAR SPACE --}}
+    <div class="hidden lg:block w-64"></div>
 
 </nav>

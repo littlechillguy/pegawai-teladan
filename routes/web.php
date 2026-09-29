@@ -17,11 +17,14 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/dashboard', [EmployeeDashboardController::class, 'index'])
-    ->middleware(['auth'])
-    ->name('dashboard');
+// =========================================================
+// USER / EMPLOYEE
+// =========================================================
 
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/dashboard', [EmployeeDashboardController::class, 'index'])
+        ->name('dashboard');
 
     Route::get('/assessment/{candidate}', [AssessmentController::class, 'create'])
         ->name('assessment.create');
@@ -35,7 +38,15 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/change-password', [PasswordController::class, 'update'])
         ->name('password.update');
 
+    // Hall of Fame untuk user
+    Route::get('/hall-of-fame', [HallOfFameController::class, 'index'])
+        ->name('hall-of-fame.index');
 });
+
+
+// =========================================================
+// ADMIN
+// =========================================================
 
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
@@ -45,7 +56,7 @@ Route::middleware(['auth', 'admin'])
         // =========================
         // DASHBOARD
         // =========================
-    
+
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
@@ -53,7 +64,7 @@ Route::middleware(['auth', 'admin'])
         // =========================
         // PEGAWAI
         // =========================
-    
+
         Route::get('/employees', [EmployeeController::class, 'index'])
             ->name('employees.index');
 
@@ -68,7 +79,6 @@ Route::middleware(['auth', 'admin'])
 
         Route::put('/employees/{employee}', [EmployeeController::class, 'update'])
             ->name('employees.update');
-
 
         // Pilih pegawai sebagai kandidat periode aktif
         Route::post(
@@ -89,7 +99,7 @@ Route::middleware(['auth', 'admin'])
         // =========================
         // PERIODE
         // =========================
-    
+
         Route::resource('periods', PeriodController::class)
             ->except(['show'])
             ->names('periods');
@@ -104,7 +114,7 @@ Route::middleware(['auth', 'admin'])
         // =========================
         // KANDIDAT
         // =========================
-    
+
         Route::get('/candidates', [CandidateController::class, 'index'])
             ->name('candidates.index');
 
@@ -116,9 +126,9 @@ Route::middleware(['auth', 'admin'])
 
 
         // =========================
-        // KRITERIA
+        // KRITERIA & PERTANYAAN
         // =========================
-    
+
         Route::get('/criteria', [CriterionController::class, 'index'])
             ->name('criteria.index');
 
@@ -154,7 +164,7 @@ Route::middleware(['auth', 'admin'])
         // =========================
         // HASIL PENILAIAN
         // =========================
-    
+
         Route::get(
             '/assessment-results',
             [AssessmentResultController::class, 'index']
@@ -170,15 +180,7 @@ Route::middleware(['auth', 'admin'])
             [AssessmentResultController::class, 'complete']
         )->name('assessment-results.complete');
 
-
-        // =========================
-        // HALL OF FAME
-        // =========================
-    
-        Route::get(
-            '/hall-of-fame',
-            [HallOfFameController::class, 'index']
-        )->name('hall-of-fame.index');
     });
+
 
 require __DIR__ . '/auth.php';

@@ -420,4 +420,23 @@
         }
     </script>
 
+</x-app-layout><x-app-layout>
+    <x-slot name="header">
+        <div>
+            <h2 class="text-xl font-bold text-slate-800">
+                Dashboard
+            </h2>
+            <p class="text-sm text-slate-500 mt-1">
+                Selamat datang di Ruang Keteladanan.
+            </p>
+        </div>
+    </x-slot>
+
+    <div class="py-8 bg-slate-50/50 min-h-[calc(100vh-5rem)]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            {{-- isi dashboard pegawai di sini --}}
+
+        </div>
+    </div>
 </x-app-layout>
