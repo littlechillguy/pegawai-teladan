@@ -31,7 +31,7 @@
                         Ruang Keteladanan
                     </h1>
                     <p class="text-xs font-semibold text-emerald-600">
-                        PPSDM
+                        PPSDM-HAM
                     </p>
                 </div>
             </div>

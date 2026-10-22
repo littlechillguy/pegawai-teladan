@@ -12,7 +12,7 @@
         </h1>
 
         <p class="mt-1 text-xs font-bold tracking-widest text-emerald-600">
-            PPSDM
+             PPSDM-HAM
         </p>
 
         <p class="mt-3 text-sm text-slate-500">
@@ -92,7 +92,7 @@
 
     <div class="mt-6 pt-5 border-t border-slate-100 text-center">
         <p class="text-[11px] text-slate-400">
-            Ruang Keteladanan · PPSDM
+            Ruang Keteladanan ·  PPSDM-HAM
         </p>
     </div>
 

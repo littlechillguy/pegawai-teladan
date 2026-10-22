@@ -17,7 +17,7 @@
                         Ruang Keteladanan
                     </p>
                     <p class="text-[9px] font-bold tracking-widest text-emerald-600">
-                        PPSDM
+                        PPSDM-HAM
                     </p>
                 </div>
             </a>
@@ -66,7 +66,7 @@
                             Ruang Keteladanan
                         </p>
                         <p class="mt-1 text-[10px] font-bold tracking-widest text-emerald-600">
-                            PPSDM
+                            PPSDM-HAM
                         </p>
                     </div>
                 </a>
